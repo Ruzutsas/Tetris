@@ -1,0 +1,10 @@
+Debug/
+bin/
+v15/
+obj/
+*.cache
+*.spritefont
+*.csproj
+properties/
+*.mgcb
+*.sln
