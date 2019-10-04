@@ -3,5 +3,5 @@ bin/
 v15/
 obj/
 *.cache
-*.csproj
 properties/
+.vs/TetrisTemplate/v16/Server/sqlite3/storage.ide
