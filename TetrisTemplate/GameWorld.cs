@@ -13,6 +13,7 @@ class GameWorld
     /// </summary>
     enum GameState
     {
+        Menu,
         Playing,
         GameOver
     }

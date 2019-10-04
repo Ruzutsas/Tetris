@@ -6,15 +6,19 @@ using Microsoft.Xna.Framework.Graphics;
 /// </summary>
 class TetrisGrid
 {
+    int[,] grid = new int[12, 20];
+    int[,] iblock = new int[1, 4]
+        {{1, 1, 1, 1}};
+
     /// The sprite of a single empty cell in the grid.
     Texture2D emptyCell;
-    Color[,] array2D = new Color[12, 20];
-      /// The position at which this TetrisGrid should be drawn.
+
+    /// The position at which this TetrisGrid should be drawn.
     Vector2 position;
 
     /// The number of grid elements in the x-direction.
-    public int Width { get { return 10; } }
-   
+    public int Width { get { return 12; } }
+
     /// The number of grid elements in the y-direction.
     public int Height { get { return 20; } }
 
@@ -25,7 +29,7 @@ class TetrisGrid
     public TetrisGrid()
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
-       
+        position = Vector2.Zero;
         Clear();
     }
 
@@ -36,21 +40,27 @@ class TetrisGrid
     /// <param name="spriteBatch">The SpriteBatch used for drawing sprites and text.</param>
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        position = Vector2.Zero;
-        Color empty = new Color(0, 0, 0, 0);
-        for (int x = 0; x < 12; x++)
+
+        for (int i = 0; i < 12; i++)
         {
-            for (int y = 0; y < 20; y++)
+            for (int u = 0; u < 20; u++)
             {
-                if (array2D[x,y] == empty)
+                if (grid[i, u] == 0)
+                {
+                    position = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
                     spriteBatch.Draw(emptyCell, position, Color.White);
-
                 }
-
-                position.Y += emptyCell.Height;      
+                else if (grid[i, u] == 1)
+                {
+                    position = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
+                    spriteBatch.Draw(emptyCell, position, Color.Orange);
+                }
+                 else if (iblock[i, u] == 0 && grid[i, u] == 0)
+                {
+                    position = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
+                    spriteBatch.Draw(emptyCell, position, Color.Yellow);
+                }
             }
-            position.Y = 0;
-            position.X += emptyCell.Width;
         }
     }
 
