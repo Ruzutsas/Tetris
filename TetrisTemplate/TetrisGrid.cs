@@ -8,8 +8,8 @@ class TetrisGrid
 {
     /// The sprite of a single empty cell in the grid.
     Texture2D emptyCell;
-
-    /// The position at which this TetrisGrid should be drawn.
+    Color[,] array2D = new Color[12, 20];
+      /// The position at which this TetrisGrid should be drawn.
     Vector2 position;
 
     /// The number of grid elements in the x-direction.
@@ -25,7 +25,7 @@ class TetrisGrid
     public TetrisGrid()
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
-        position = Vector2.Zero;
+       
         Clear();
     }
 
@@ -36,6 +36,22 @@ class TetrisGrid
     /// <param name="spriteBatch">The SpriteBatch used for drawing sprites and text.</param>
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
+        position = Vector2.Zero;
+        Color empty = new Color(0, 0, 0, 0);
+        for (int x = 0; x < 12; x++)
+        {
+            for (int y = 0; y < 20; y++)
+            {
+                if (array2D[x,y] == empty)
+                    spriteBatch.Draw(emptyCell, position, Color.White);
+
+                }
+
+                position.Y += emptyCell.Height;      
+            }
+            position.Y = 0;
+            position.X += emptyCell.Width;
+        }
     }
 
     /// <summary>
