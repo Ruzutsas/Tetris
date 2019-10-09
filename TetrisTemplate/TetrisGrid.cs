@@ -56,19 +56,21 @@ class TetrisGrid
                     position = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
                     spriteBatch.Draw(emptyCell, position, Color.Orange);
                 }
-                for (int a = 0; a < 1; a++)
-                {
-                    for (int k = 0; k < 4; k++)
-                    {
-                        if (iblock[a, k] == 0)
-                        {
-                            iblockposition = new Vector2(a * emptyCell.Width, k * emptyCell.Height);
-                            iblockposition.Y = (iblockposition.Y) + ((int)gameTime.TotalGameTime.TotalMilliseconds/10);
-                            spriteBatch.Draw(emptyCell, iblockposition, Color.Yellow);
-                        }
-                    }
-                }
+                
                  
+            }
+        }
+
+        for (int a = 0; a < 1; a++)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                if (iblock[a, k] == 0)
+                {
+                    iblockposition = new Vector2(a * emptyCell.Width, k * emptyCell.Height);
+                    iblockposition.Y = (iblockposition.Y) + ((int)gameTime.TotalGameTime.Seconds * emptyCell.Height);
+                    spriteBatch.Draw(emptyCell, iblockposition, Color.Yellow);
+                }
             }
         }
     }
