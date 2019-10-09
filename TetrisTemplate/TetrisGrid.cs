@@ -7,15 +7,15 @@ using Microsoft.Xna.Framework.Graphics;
 class TetrisGrid
 {
     int[,] grid = new int[12, 20];
-    int[,] iblock = new int[1, 4]
-        {{1, 1, 1, 1}};
+    int[,] iblock = new int[1, 4];
+        
 
     /// The sprite of a single empty cell in the grid.
     Texture2D emptyCell;
 
     /// The position at which this TetrisGrid should be drawn.
     Vector2 position;
-
+    Vector2 iblockposition;
     /// The number of grid elements in the x-direction.
     public int Width { get { return 12; } }
 
@@ -30,6 +30,7 @@ class TetrisGrid
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
         position = Vector2.Zero;
+       
         Clear();
     }
 
@@ -43,7 +44,7 @@ class TetrisGrid
 
         for (int i = 0; i < 12; i++)
         {
-            for (int u = 0; u < 20; u++)
+           for (int u = 0; u < 20; u++)
             {
                 if (grid[i, u] == 0)
                 {
@@ -55,11 +56,19 @@ class TetrisGrid
                     position = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
                     spriteBatch.Draw(emptyCell, position, Color.Orange);
                 }
-                 else if (iblock[i, u] == 0 && grid[i, u] == 0)
+                for (int a = 0; a < 1; a++)
                 {
-                    position = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
-                    spriteBatch.Draw(emptyCell, position, Color.Yellow);
+                    for (int k = 0; k < 4; k++)
+                    {
+                        if (iblock[a, k] == 0)
+                        {
+                            iblockposition = new Vector2(a * emptyCell.Width, k * emptyCell.Height);
+                            iblockposition.Y = (iblockposition.Y) + ((int)gameTime.TotalGameTime.TotalMilliseconds/10);
+                            spriteBatch.Draw(emptyCell, iblockposition, Color.Yellow);
+                        }
+                    }
                 }
+                 
             }
         }
     }
