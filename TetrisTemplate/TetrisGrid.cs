@@ -7,15 +7,14 @@ using Microsoft.Xna.Framework.Graphics;
 class TetrisGrid
 {
     int[,] grid = new int[12, 20];
-    int[,] iblock = new int[1, 4];
-        
+   
+
 
     /// The sprite of a single empty cell in the grid.
     Texture2D emptyCell;
 
     /// The position at which this TetrisGrid should be drawn.
     Vector2 position;
-    Vector2 iblockposition;
     /// The number of grid elements in the x-direction.
     public int Width { get { return 12; } }
 
@@ -56,23 +55,10 @@ class TetrisGrid
                     position = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
                     spriteBatch.Draw(emptyCell, position, Color.Orange);
                 }
-                
-                 
             }
         }
 
-        for (int a = 0; a < 1; a++)
-        {
-            for (int k = 0; k < 4; k++)
-            {
-                if (iblock[a, k] == 0)
-                {
-                    iblockposition = new Vector2(a * emptyCell.Width, k * emptyCell.Height);
-                    iblockposition.Y = (iblockposition.Y) + ((int)gameTime.TotalGameTime.Seconds * emptyCell.Height);
-                    spriteBatch.Draw(emptyCell, iblockposition, Color.Yellow);
-                }
-            }
-        }
+
     }
 
     /// <summary>
