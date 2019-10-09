@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Tetris
 {
-    class Iblock
+    class BlockI : TetrisBlock
     {
+        public BlockI ()
+        {
+            tetrisblock = new []
+        }
+
     }
 }

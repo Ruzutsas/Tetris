@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tetris
 {
-    class Oblock
+    class BlockO
     {
     }
 }

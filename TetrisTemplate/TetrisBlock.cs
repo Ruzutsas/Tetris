@@ -6,7 +6,7 @@ namespace Tetris
     class TetrisBlock
     {
             Texture2D emptyCell;
-            int[,] tetrisblock;
+            public int[,] tetrisblock;
             Vector2 iblockposition;
 
             public TetrisBlock()
@@ -16,7 +16,6 @@ namespace Tetris
             }
             public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
             {
-
                 for (int a = 0; a < 4; a++)
                 {
                     for (int k = 0; k < 1; k++)
