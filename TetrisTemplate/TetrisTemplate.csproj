@@ -39,8 +39,15 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BlockJ.cs" />
+    <Compile Include="BlockL.cs" />
+    <Compile Include="BlockS.cs" />
+    <Compile Include="BlockT.cs" />
+    <Compile Include="BlockZ.cs" />
     <Compile Include="GameWorld.cs" />
+    <Compile Include="BlockI.cs" />
     <Compile Include="InputHelper.cs" />
+    <Compile Include="BlockO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TetrisBlock.cs" />
     <Compile Include="TetrisGame.cs" />
