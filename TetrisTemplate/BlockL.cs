@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tetris
 {
-    class BlockL
+    class BlockL : TetrisBlock
     {
+        Boolean tetrisblock = new bool 
     }
 }
