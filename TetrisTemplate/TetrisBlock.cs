@@ -23,15 +23,14 @@ namespace Tetris
                 {
                     for (int k = 0; k < 4; k++)
                     {
-                        if (tetrisblock[a, k] == true)
-                        {
-                            Cellpos = new Vector2(emptyCell.Width * a + startposition.X, emptyCell.Height * k + startposition.Y); 
-                            Cellpos.Y = (Cellpos.Y) + ((int)gameTime.TotalGameTime.Seconds * emptyCell.Height);
-                            spriteBatch.Draw(emptyCell, Cellpos, Color.Yellow);
+                    if (tetrisblock[a, k] == true)
+                    {
+                        Cellpos = new Vector2(emptyCell.Width * a + startposition.X, emptyCell.Height * k + startposition.Y);
+                        Cellpos.Y = (Cellpos.Y) + ((int)gameTime.TotalGameTime.Seconds * emptyCell.Height);
+                        spriteBatch.Draw(emptyCell, Cellpos, Color.Green);
                         }
                     }
-                }
-
+                    }
             }
             public void Clear()
             {
