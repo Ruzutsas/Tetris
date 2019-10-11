@@ -17,6 +17,7 @@ namespace Tetris
             {true,false,false,false},
             {true,false,false,false},
             {true,false,false,false}};
+            color = Color.Cyan;
         }
     }
 }

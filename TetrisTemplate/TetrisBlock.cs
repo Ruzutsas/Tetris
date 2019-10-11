@@ -7,8 +7,13 @@ namespace Tetris
     class TetrisBlock
     {
             Texture2D emptyCell;
-            public Boolean[,] tetrisblock;
+            protected Boolean[,] tetrisblock;
             Vector2 startposition;
+            protected Color color;
+            public Color Blockcolor
+            {
+                get{return color;}
+            } 
 
             public TetrisBlock()
             {
@@ -25,9 +30,9 @@ namespace Tetris
                     {
                         if (tetrisblock[a, k] == true)
                         {
-                            Cellpos = new Vector2(emptyCell.Width * a + startposition.X, emptyCell.Height * k + startposition.Y); 
+                            Cellpos = new Vector2(emptyCell.Width * a + startposition.X, emptyCell.Height * k + startposition.Y); //Spawnt de tetromino op de startpositie
                             Cellpos.Y = (Cellpos.Y) + ((int)gameTime.TotalGameTime.Seconds * emptyCell.Height);
-                            spriteBatch.Draw(emptyCell, Cellpos, Color.Yellow);
+                            spriteBatch.Draw(emptyCell, Cellpos, color);
                         }
                     }
                 }
