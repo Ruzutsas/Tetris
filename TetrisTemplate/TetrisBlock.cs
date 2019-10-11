@@ -7,7 +7,7 @@ namespace Tetris
     class TetrisBlock
     {
             Texture2D emptyCell;
-        public Boolean[,] tetrisblock;
+            public Boolean[,] tetrisblock;
             Vector2 iblockposition;
 
             public TetrisBlock()
@@ -34,5 +34,11 @@ namespace Tetris
             public void Clear()
             {
             }
+
+             public virtual bool CheckBlock()
+        {
+            return false;
+        }
         }
 }
+
