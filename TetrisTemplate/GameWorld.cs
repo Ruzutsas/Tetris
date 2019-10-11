@@ -39,8 +39,8 @@ class GameWorld
     /// The main grid of the game.
     /// </summary>
     TetrisGrid grid;
-    TetrisBlock block;
-    BlockI blocki;
+    TetrisBlock tetrisblock;
+    BlockI block;
 
     public GameWorld()
     {
@@ -48,9 +48,9 @@ class GameWorld
         gameState = GameState.Playing;
 
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
-        block = new TetrisBlock();
+        tetrisblock = new TetrisBlock();
         grid = new TetrisGrid();
-        blocki = new BlockI();
+        block = new BlockI();
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
