@@ -40,7 +40,9 @@ class GameWorld
     /// </summary>
     TetrisGrid grid;
     TetrisBlock tetrisblock;
+
     BlockI block;
+
 
     public GameWorld()
     {
