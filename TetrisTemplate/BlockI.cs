@@ -10,11 +10,11 @@ namespace Tetris
 {
     class BlockI : TetrisBlock
     {
-        
-        public BlockI ()
+
+        public BlockI()
         {
-          tetrisblock  = new bool[4, 4]
-            {{true,false,false,false},
+            tetrisblock = new bool[4, 4]
+              {{true,false,false,false},
             {true,false,false,false},
             {true,false,false,false},
             {true,false,false,false}};
