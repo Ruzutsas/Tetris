@@ -48,10 +48,9 @@ class GameWorld
     {
         random = new Random();
         gameState = GameState.Playing;
-
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
         tetrisblock = new TetrisBlock();
-        grid = new TetrisGrid();x
+        grid = new TetrisGrid();
         block = TetrisBlock.GetRandomBlock();
     }
 

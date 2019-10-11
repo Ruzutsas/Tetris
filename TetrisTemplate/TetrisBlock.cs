@@ -16,7 +16,6 @@ namespace Tetris
         protected Boolean[,] tetrisblock;
         Vector2 startposition;
         protected Color color;
-
         public Color Blockcolor
         {
             get { return color; }
