@@ -10,10 +10,13 @@ namespace Tetris
 {
     class BlockL : TetrisBlock
     {
-        Boolean tetrisblock = new bool[] { {0, 0, 0, 1},
-                                           {1, 1, 1, 1},
-                                           {0, 0, 0, 0},
-                                           {0, 0, 0, 0}
-                                         }; 
+        public BlockL ()
+        {
+          tetrisblock  = new bool[4, 4]
+            {{true,true,false,false},
+            {false,true,false,false},
+            {false,true,false,false},
+            {false,false,false,false}};
+        }
     }
 }
