@@ -17,7 +17,7 @@ namespace Tetris
             {true,false,false,false},
             {true,false,false,false},
             {true,false,false,false}};
-            color = Color.Cyan;
+            color = Color.LightSkyBlue;             //Kleur van BlockI
         }
     }
 }

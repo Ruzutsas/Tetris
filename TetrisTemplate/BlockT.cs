@@ -17,7 +17,7 @@ namespace Tetris
             {true,true,false,false},
             {false,true,false,false},
             {false,false,false,false}};   
-            color = Color.Violet;
+            color = Color.Magenta;               //Kleur van BlockT
         }
     }
 }

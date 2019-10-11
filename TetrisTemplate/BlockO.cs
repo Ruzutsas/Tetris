@@ -17,7 +17,7 @@ namespace Tetris
             {true,true,false,false},
             {true,true,false,false},
             {false,false,false,false}};
-            color = Color.Yellow;
+            color = Color.Yellow;               //Kleur van BlockO
         }
     }
 }
