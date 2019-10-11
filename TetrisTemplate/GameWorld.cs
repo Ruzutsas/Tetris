@@ -40,6 +40,7 @@ class GameWorld
     /// </summary>
     TetrisGrid grid;
     TetrisBlock block;
+    BlockI blocki;
 
     public GameWorld()
     {
@@ -49,6 +50,7 @@ class GameWorld
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
         block = new TetrisBlock();
         grid = new TetrisGrid();
+        blocki = new BlockI();
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
