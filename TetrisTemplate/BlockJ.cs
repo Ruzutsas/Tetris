@@ -11,8 +11,8 @@ namespace Tetris
     class BlockJ : TetrisBlock
     {
         public BlockJ()
-        {          
-            tetrisblock = new bool[4, 4] 
+        {
+            tetrisblock = new bool[4, 4]
           { {false,true,false,false},
             {false,true,false,false},
             {true,true,false,false},

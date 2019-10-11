@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 class TetrisGrid
 {
     int[,] grid = new int[12, 20];
-   
+
 
 
     /// The sprite of a single empty cell in the grid.
@@ -29,7 +29,7 @@ class TetrisGrid
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
         position = Vector2.Zero;
-       
+
         Clear();
     }
 
@@ -43,7 +43,7 @@ class TetrisGrid
 
         for (int i = 0; i < 12; i++)
         {
-           for (int u = 0; u < 20; u++)
+            for (int u = 0; u < 20; u++)
             {
                 if (grid[i, u] == 0)
                 {

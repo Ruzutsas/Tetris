@@ -2,20 +2,25 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Tetris
 {
     class TetrisBlock
     {
+        static Random randomblocks = new Random();
         Texture2D emptyCell;
         protected Boolean[,] tetrisblock;
         Vector2 startposition;
-        Vector2 Cellpos;  
         protected Color color;
+
         public Color Blockcolor
         {
-            get{return color;}
-        } 
+            get { return color; }
+        }
 
         public TetrisBlock()
         {
@@ -26,9 +31,9 @@ namespace Tetris
             
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            //Cellpos is de positie van de tetromino
-           for (int a = 0; a < 4; a++)
-           {
+            Vector2 Cellpos;
+            for (int a = 0; a < 4; a++)
+            {
                 for (int k = 0; k < 4; k++)
                 {
                     if (tetrisblock[a, k] == true)
@@ -38,27 +43,37 @@ namespace Tetris
                         spriteBatch.Draw(emptyCell, Cellpos, color);
                     }
                 }
-           }
-
+            }
         }
-
-        public void HandleInput(InputHelper inputHelper)
+        public void Clear()
         {
-            if (inputHelper.KeyPressed(Keys.S))
-            {
-              Cellpos.Y = Cellpos.Y + emptyCell.Height;
-            }
-      
         }
-            public void Clear()
-            {
-            }
-            
-            
 
         public virtual bool CheckBlock()
         {
             return false;
+        }
+
+        public static TetrisBlock GetRandomBlock()
+        {
+            int random = randomblocks.Next(1, 8);
+            switch (random)
+            {
+                case 1:
+                    return new BlockI();
+                case 2:
+                    return new BlockJ();
+                case 3:
+                    return new BlockL();
+                case 4:
+                    return new BlockO();
+                case 5:
+                    return new BlockS();
+                case 6:
+                    return new BlockT();
+                default:
+                    return new BlockZ();
+            }
         }
     }
 }
