@@ -11,11 +11,12 @@ namespace Tetris
 {
     class TetrisBlock
     {
-        static Random randomblocks = new Random();
-        Texture2D emptyCell;
-        protected Boolean[,] tetrisblock;
+        static readonly Random randomblocks = new Random();
+        static Texture2D emptyCell;
+        protected bool[,] tetrisblock;
         Vector2 startposition;
         protected Color color;
+        static Vector2 Cellpos;
         public Color Blockcolor
         {
             get { return color; }
@@ -25,12 +26,18 @@ namespace Tetris
         {
             emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
             startposition = new Vector2(emptyCell.Width * 4, 0);
-                Clear();
+            Clear();
         }
-            
+        public void HandleInput(GameTime gameTime, InputHelper inputHelper)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                Cellpos.Y += emptyCell.Height;
+        }
+        public void Update(GameTime gameTime)
+        {
+        }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            Vector2 Cellpos;
             for (int a = 0; a < 4; a++)
             {
                 for (int k = 0; k < 4; k++)

@@ -41,9 +41,6 @@ class GameWorld
     TetrisGrid grid;
     TetrisBlock tetrisblock;
     TetrisBlock block;
-
-
-
     public GameWorld()
     {
         random = new Random();
@@ -56,10 +53,12 @@ class GameWorld
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
+        tetrisblock.HandleInput(gameTime, inputHelper);
     }
 
     public void Update(GameTime gameTime)
     {
+        tetrisblock.Update(gameTime);
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

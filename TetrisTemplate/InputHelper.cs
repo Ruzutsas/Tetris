@@ -49,7 +49,6 @@ class InputHelper
     {
         return currentKeyboardState.IsKeyDown(k) && previousKeyboardState.IsKeyUp(k);
     }
-
     /// <summary>
     /// Returns whether or not a given keyboard key is currently being held down.
     /// </summary>
