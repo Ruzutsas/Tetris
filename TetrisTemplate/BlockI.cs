@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Tetris
 {
     class BlockI : TetrisBlock
     {
-        public BlockI ()
+        public BlockI()
         {
-            Boolean tetrisblock = new bool [] {{1, 1, 1, 1},
-                                                  {0, 0, 0, 0},
-                                                  {0, 0, 0, 0},      
-                                                  {0, 0, 0, 0}
-                                                 };
-        }
 
+            tetrisblock = new bool[4, 4]
+              {{true,false,false,false},
+            {true,false,false,false},
+            {true,false,false,false},
+            {true,false,false,false}};
+            color = Color.LightSkyBlue;             //Kleur van BlockI
+        }
     }
 }

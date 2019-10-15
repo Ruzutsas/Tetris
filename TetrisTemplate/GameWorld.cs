@@ -39,24 +39,26 @@ class GameWorld
     /// The main grid of the game.
     /// </summary>
     TetrisGrid grid;
+    TetrisBlock tetrisblock;
     TetrisBlock block;
-
     public GameWorld()
     {
         random = new Random();
         gameState = GameState.Playing;
-
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
-        block = new TetrisBlock();
+        tetrisblock = new TetrisBlock();
         grid = new TetrisGrid();
+        block = TetrisBlock.GetRandomBlock();
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
+        tetrisblock.HandleInput(gameTime, inputHelper);
     }
 
     public void Update(GameTime gameTime)
     {
+        tetrisblock.Update(gameTime);
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

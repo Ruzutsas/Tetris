@@ -2,13 +2,12 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-
+using Tetris;
 class TetrisGame : Game
 {
     SpriteBatch spriteBatch;
     InputHelper inputHelper;
     GameWorld gameWorld;
-
     /// <summary>
     /// A static reference to the ContentManager object, used for loading assets.
     /// </summary>
@@ -50,7 +49,6 @@ class TetrisGame : Game
     protected override void LoadContent()
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
-
         // create and reset the game world
         gameWorld = new GameWorld();
         gameWorld.Reset();

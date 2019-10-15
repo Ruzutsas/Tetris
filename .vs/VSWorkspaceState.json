@@ -1,9 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\TetrisTemplate",
-    "\\TetrisTemplate\\Content"
+    "\\TetrisTemplate"
   ],
-  "SelectedNode": "\\TetrisTemplate\\GameWorld.cs",
+  "SelectedNode": "\\TetrisTemplate\\BlockT.cs",
   "PreviewInSolutionExplorer": false
 }
