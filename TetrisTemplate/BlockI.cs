@@ -10,7 +10,11 @@ namespace Tetris
     {
         public BlockI ()
         {
-            tetrisblock = new []
+            Boolean tetrisblock = new bool [] {{1, 1, 1, 1},
+                                                  {0, 0, 0, 0},
+                                                  {0, 0, 0, 0},      
+                                                  {0, 0, 0, 0}
+                                                 };
         }
 
     }
