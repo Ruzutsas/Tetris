@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using Tetris;
 
@@ -53,7 +54,7 @@ class GameWorld
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
-        tetrisblock.HandleInput(gameTime, inputHelper);
+        tetrisblock.HandleInput(gameTime, inputHelper);       
     }
 
     public void Update(GameTime gameTime)
