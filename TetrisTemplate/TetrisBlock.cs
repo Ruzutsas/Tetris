@@ -48,6 +48,18 @@ namespace Tetris
             {
                 counter += 1;
             }
+            else if (inputHelper.KeyPressed(Keys.Down))
+            {
+                startposition.Y += emptyCell.Height;
+            }
+            else if (inputHelper.KeyPressed(Keys.A))
+            {
+               RotateL();
+            }
+            else if (inputHelper.KeyPressed(Keys.D))
+            {
+               RotateR();
+            }
         }
         public void Update(GameTime gameTime)
         {
@@ -56,7 +68,6 @@ namespace Tetris
                 startposition.Y = emptyCell.Height * 20;
                 currentblockstate = blockstate.blocked;
             }
-
             else
             {
                 counter += gameTime.ElapsedGameTime.TotalSeconds;
@@ -64,13 +75,13 @@ namespace Tetris
             }
                 
         }
+
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            Vector2 Cellpos;
-
-            for (int a = 0; a < 4; a++)
+            int x = tetrisblock.GetLength(0);
+            for (int a = 0; a < x; a++)
             {
-                for (int k = 0; k < 4; k++)
+                for (int k = 0; k < x; k++)
                 {
                     if (tetrisblock[a, k] == true)
                     {    
@@ -81,6 +92,34 @@ namespace Tetris
                 }
             }
         }
+        public void RotateL()
+        {
+            int x = tetrisblock.GetLength(0);
+            bool[,] Lrblock = new bool [x,x];
+            for (int a = 0; a < x; a++)
+            {
+                for (int k = 0; k < x; k++)
+                {      
+                    Lrblock[a, k] = tetrisblock[k, x- 1 - a];
+                }             
+            }
+            tetrisblock = Lrblock;
+        }
+        
+        public void RotateR()
+        {
+            int x = tetrisblock.GetLength(0);
+            bool[,] Rrblock = new bool [x,x];
+            for (int a = 0; a < x; a++)
+            {
+                for (int k = 0; k < x; k++)
+                {      
+                    Rrblock[a, k] = tetrisblock[x-1- k, a];
+                }             
+            }
+            tetrisblock = Rrblock;
+        }
+
         public void Clear()
         {
         }
