@@ -49,10 +49,6 @@ namespace Tetris
             {
                 counter += 1;
             }
-            else if (inputHelper.KeyPressed(Keys.Down))
-            {
-                startposition.Y += emptyCell.Height;
-            }
             else if (inputHelper.KeyPressed(Keys.A))
             {
                RotateL();
