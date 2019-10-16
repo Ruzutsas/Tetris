@@ -78,6 +78,7 @@ namespace Tetris
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            Vector2 Cellpos;
             int x = tetrisblock.GetLength(0);
             for (int a = 0; a < x; a++)
             {
