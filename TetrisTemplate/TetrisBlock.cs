@@ -13,11 +13,11 @@ namespace Tetris
     class TetrisBlock
     {
         static readonly Random randomblocks = new Random();
-        static Texture2D emptyCell;
+        public Texture2D emptyCell;
         protected bool[,] tetrisblock;
         Vector2 startposition;
         protected Color color;
-        static Vector2 Cellpos;
+        public Vector2 Cellpos;
         public Color Blockcolor
         {
             get { return color; }
@@ -53,8 +53,20 @@ namespace Tetris
                     if (tetrisblock[a, k] == true)
                     {
                         Cellpos = new Vector2(emptyCell.Width * a + startposition.X, emptyCell.Height * k + startposition.Y); //Spawnt de tetromino op de startpositie
-                        Cellpos.Y = (Cellpos.Y) + ((int)gameTime.TotalGameTime.Seconds * emptyCell.Height);
-                        spriteBatch.Draw(emptyCell, Cellpos, color);
+                       
+                        if (Cellpos.Y < emptyCell.Height * 3)
+                        {
+                            Cellpos.Y = (Cellpos.Y) + ((int)gameTime.TotalGameTime.Seconds * emptyCell.Height);
+                            spriteBatch.Draw(emptyCell, Cellpos, color);
+                        if (Cellpos.Y > emptyCell.Height * 3)
+                        {
+                            Cellpos.Y = emptyCell.Height * 3;
+                            Cellpos.Y = Cellpos.Y + 0;
+                            spriteBatch.Draw(emptyCell, Cellpos, color);
+                            break;
+                        }
+                        }
+
                     }
                 }
             }
