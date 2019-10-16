@@ -46,13 +46,13 @@ class GameWorld
         random = new Random();
         gameState = GameState.Playing;
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
-        tetrisblock = new BlockT();
+        tetrisblock = TetrisBlock.GetRandomBlock();
         grid = new TetrisGrid();
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
-        tetrisblock.HandleInput(gameTime, inputHelper);       
+        tetrisblock.HandleInput(gameTime, inputHelper);
     }
 
     public void Update(GameTime gameTime)
@@ -73,4 +73,22 @@ class GameWorld
     {
     }
 
+    public bool Collision()
+    {
+        bool[,] array = tetrisblock.tetrisblock;
+        bool collision = false;
+        Point blockpoint = tetrisblock.tetposition;
+        Point gridpoint = Point.Zero;
+        int x = array.GetLength(0);
+        for (int a = 0; a < x; a++)
+        {
+            for (int k = 0; k < x; k++)
+            {
+                if (blockpoint < 0 )
+                    collision = true;
+            }
+        }
+        return collision;
+
+    }
 }
