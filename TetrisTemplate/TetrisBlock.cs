@@ -18,6 +18,7 @@ namespace Tetris
         Vector2 startposition;
         protected Color color;
         public Vector2 Cellpos;
+        enum blockstate {moving, blocked};      
         public Color Blockcolor
         {
             get { return color; }
@@ -53,7 +54,7 @@ namespace Tetris
                     if (tetrisblock[a, k] == true)
                     {
                         Cellpos = new Vector2(emptyCell.Width * a + startposition.X, emptyCell.Height * k + startposition.Y); //Spawnt de tetromino op de startpositie
-                       
+                        
                         if (Cellpos.Y < emptyCell.Height * 3)
                         {
                             Cellpos.Y = (Cellpos.Y) + ((int)gameTime.TotalGameTime.Seconds * emptyCell.Height);
