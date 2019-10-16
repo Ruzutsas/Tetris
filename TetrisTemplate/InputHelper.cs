@@ -9,7 +9,6 @@ class InputHelper
     // The current and previous mouse/keyboard states.
     MouseState currentMouseState, previousMouseState;
     KeyboardState currentKeyboardState, previousKeyboardState;
-
     /// <summary>
     /// Updates the InputHelper object by retrieving the new mouse/keyboard state, and keeping the previous state as a back-up.
     /// </summary>

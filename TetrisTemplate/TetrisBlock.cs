@@ -1,22 +1,23 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using Microsoft.Xna.Framework.Input;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
 
 namespace Tetris
 {
     class TetrisBlock
     {
         static readonly Random randomblocks = new Random();
-        static Texture2D emptyCell;
+        public Texture2D emptyCell;
         protected bool[,] tetrisblock;
         Vector2 startposition;
         protected Color color;
-        static Vector2 Cellpos;
+        public Vector2 Cellpos;
         public Color Blockcolor
         {
             get { return color; }
@@ -28,10 +29,17 @@ namespace Tetris
             startposition = new Vector2(emptyCell.Width * 4, 0);
             Clear();
         }
+
         public void HandleInput(GameTime gameTime, InputHelper inputHelper)
-        {
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                Cellpos.Y += emptyCell.Height;
+        {          
+            if (inputHelper.KeyPressed(Keys.Right))
+            {
+                Cellpos.X += emptyCell.Width;
+            }
+            else if (inputHelper.KeyPressed(Keys.Left))
+            {
+                Cellpos.X -= emptyCell.Width;
+            }
         }
         public void Update(GameTime gameTime)
         {
@@ -93,6 +101,11 @@ namespace Tetris
                 default:
                     return new BlockZ();
             }
+        }
+
+        public void Reset()
+        {
+            
         }
     }
 }
