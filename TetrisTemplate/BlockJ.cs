@@ -12,11 +12,10 @@ namespace Tetris
     {
         public BlockJ()
         {
-            tetrisblock = new bool[4, 4]
-          { {false,false,true,false},
-            {false,false,true,false},
-            {false,true,true,false},
-            {false,false,false,false}};
+            tetrisblock = new bool[3, 3]
+          { {false,true,false},
+            {false,true,false},
+            {true,true,false}};
             color = Color.Orange;               //Kleur van BlockJ
         }
     }
