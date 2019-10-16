@@ -6,9 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 /// </summary>
 class TetrisGrid
 {
-    int[,] grid = new int[12, 20];
+    public bool[,] grid = new bool[12, 20];
 
-
+    public Point gridposition;
 
     /// The sprite of a single empty cell in the grid.
     Texture2D emptyCell;
@@ -27,6 +27,7 @@ class TetrisGrid
     /// <param name="b"></param>
     public TetrisGrid()
     {
+        gridposition = Point.Zero;
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
         position = Vector2.Zero;
 
@@ -45,15 +46,10 @@ class TetrisGrid
         {
             for (int u = 0; u < 20; u++)
             {
-                if (grid[i, u] == 0)
+                if (grid[i, u] == false)
                 {
                     position = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
                     spriteBatch.Draw(emptyCell, position, Color.White);
-                }
-                else if (grid[i, u] == 1)
-                {
-                    position = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
-                    spriteBatch.Draw(emptyCell, position, Color.Orange);
                 }
             }
         }

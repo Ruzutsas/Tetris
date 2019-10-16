@@ -12,6 +12,7 @@ namespace Tetris
 {
     class TetrisBlock
     {
+        TetrisGrid tetrisGrid;
         static readonly Random randomblocks = new Random();
         public Texture2D emptyCell;
         public bool[,] tetrisblock;
@@ -30,6 +31,7 @@ namespace Tetris
 
         public TetrisBlock()
         {
+            tetrisGrid = new TetrisGrid();
             emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
             blockposition = new Point(emptyCell.Width * 4, 0);
             Clear();
@@ -53,29 +55,45 @@ namespace Tetris
             {
                 counter++;
                 if (Collision())
-                    blockposition.Y -= emptyCell.Height;
+                    counter--;
             }
             else if (inputHelper.KeyPressed(Keys.A))
             {
                 RotateL();
+                if (Collision())
+                    RotateR();
             }
             else if (inputHelper.KeyPressed(Keys.D))
             {
                 RotateR();
+                if (Collision())
+                    RotateL();
             }
         }
         public void Update(GameTime gameTime)
         {
             if (Collision())
-                blockposition.Y -= emptyCell.Height;
-
+            {
+                GetRandomBlock();
+                Vector2 Cellpos;
+                int x = tetrisblock.GetLength(0);
+                for (int a = 0; a < x; a++)
+                {
+                    for (int k = 0; k < x; k++)
+                    {
+                        Cellpos.X = emptyCell.Width * a + blockposition.X; //Spawnt de tetromino op de startpositie
+                        Cellpos.Y = emptyCell.Height * k + blockposition.Y;
+                        if (tetrisblock[a, k] == true)
+                        {
+                        }
+                    }
+                }
+            }
             else
             {
                 counter += gameTime.ElapsedGameTime.TotalSeconds;
                 blockposition.Y = ((int)counter * emptyCell.Height);
-
             }
-
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -124,24 +142,26 @@ namespace Tetris
         }
 
         public bool Collision()
-        {
+        { 
             bool collision = false;
+            Point gridpos = tetrisGrid.gridposition;
+            bool[,] grid = tetrisGrid.grid;
             int x = tetrisblock.GetLength(0);
             for (int a = 0; a < x; a++)
             {
                 for (int k = 0; k < x; k++)
                 {
-                    if (tetrisblock[a, k] == true)
+                    if (tetrisblock[a, k] == true)                        
                     {
-
-                        if (blockposition.X + a*9< 0 || blockposition.X+ a*9 > emptyCell.Width * 10 || blockposition.Y +k*20 > emptyCell.Height * 20)
+                        int blockX = blockposition.X + a * emptyCell.Width;
+                        int blockY = blockposition.Y + k * emptyCell.Height;
+                        if (blockX < 0 || blockX > emptyCell.Width * 11 || blockY < 0 || blockY > emptyCell.Height * 18|| grid[k,a] == true)
                             collision = true;
                     }
                 }
 
             }
             return collision;
-
         }
         public void Clear()
         {
