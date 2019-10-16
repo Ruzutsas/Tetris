@@ -18,6 +18,7 @@ namespace Tetris
         Vector2 startposition;
         protected Color color;
         Vector2 Cellpos;
+        enum blockstate {moving, blocked};      
         public Color Blockcolor
         {
             get { return color; }
