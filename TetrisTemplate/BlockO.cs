@@ -14,8 +14,8 @@ namespace Tetris
         {
             tetrisblock = new bool[4, 4] 
           { {false,false,false,false},
-            {true,true,false,false},
-            {true,true,false,false},
+            {false,true,true,false},
+            {false,true,true,false},
             {false,false,false,false}};
             color = Color.Yellow;               //Kleur van BlockO
         }
