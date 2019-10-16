@@ -14,11 +14,11 @@ namespace Tetris
     {
         static readonly Random randomblocks = new Random();
         public Texture2D emptyCell;
-        protected bool[,] tetrisblock;
-        Vector2 startposition;
+        public bool[,] tetrisblock;
+        public Point tetposition; // position van block in grid
+        Point startposition;
         protected Color color;
         double counter;
-       
         enum blockstate {moving, blocked};
         blockstate currentblockstate = blockstate.moving;
         public Color Blockcolor
@@ -29,7 +29,8 @@ namespace Tetris
         public TetrisBlock()
         {
             emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
-            startposition = new Vector2(emptyCell.Width * 4, 0);
+            startposition = new Point(emptyCell.Width * 4, 0);
+            tetposition = startposition;
             Clear();
         }
 
