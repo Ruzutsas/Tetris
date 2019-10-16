@@ -35,6 +35,7 @@ class GameWorld
     /// The current game state.
     /// </summary>
     GameState gameState;
+    
 
     /// <summary>
     /// The main grid of the game.
@@ -58,6 +59,7 @@ class GameWorld
     public void Update(GameTime gameTime)
     {
         tetrisblock.Update(gameTime);
+        
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -71,24 +73,5 @@ class GameWorld
 
     public void Reset()
     {
-    }
-
-    public bool Collision()
-    {
-        bool[,] array = tetrisblock.tetrisblock;
-        bool collision = false;
-        Point blockpoint = tetrisblock.tetposition;
-        Point gridpoint = Point.Zero;
-        int x = array.GetLength(0);
-        for (int a = 0; a < x; a++)
-        {
-            for (int k = 0; k < x; k++)
-            {
-                if (blockpoint < 0 )
-                    collision = true;
-            }
-        }
-        return collision;
-
     }
 }

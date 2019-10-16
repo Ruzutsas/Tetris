@@ -15,12 +15,9 @@ namespace Tetris
         static readonly Random randomblocks = new Random();
         public Texture2D emptyCell;
         public bool[,] tetrisblock;
-        public Point tetposition; // position van block in grid
-        Point startposition;
+        Point blockposition;
         protected Color color;
         double counter;
-        enum blockstate {moving, blocked};
-        blockstate currentblockstate = blockstate.moving;
         public Color Blockcolor
         {
             get { return color; }
@@ -29,8 +26,7 @@ namespace Tetris
         public TetrisBlock()
         {
             emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
-            startposition = new Point(emptyCell.Width * 4, 0);
-            tetposition = startposition;
+            blockposition = new Point(emptyCell.Width * 4, 0);
             Clear();
         }
 
@@ -38,43 +34,43 @@ namespace Tetris
         {
             if (inputHelper.KeyPressed(Keys.Right))
             {
-               startposition.X += emptyCell.Width;
+                blockposition.X += emptyCell.Width;
+                if (Collision())
+                    blockposition.X -= emptyCell.Width;
             }
             else if (inputHelper.KeyPressed(Keys.Left))
-            {   
-                startposition.X -= emptyCell.Width;
-                Console.WriteLine(startposition.X);
+            {
+                blockposition.X -= emptyCell.Width;
+                if (Collision())
+                    blockposition.X += emptyCell.Width;
             }
             else if (inputHelper.KeyPressed(Keys.Down))
             {
-                counter += 1;
-            }
-            else if (inputHelper.KeyPressed(Keys.Down))
-            {
-                startposition.Y += emptyCell.Height;
+                counter++;
+                if (Collision())
+                    blockposition.Y -= emptyCell.Height;
             }
             else if (inputHelper.KeyPressed(Keys.A))
             {
-               RotateL();
+                RotateL();
             }
             else if (inputHelper.KeyPressed(Keys.D))
             {
-               RotateR();
+                RotateR();
             }
         }
         public void Update(GameTime gameTime)
         {
-            if (startposition.Y >= emptyCell.Height * 20)
-            {
-                startposition.Y = emptyCell.Height * 20;
-                currentblockstate = blockstate.blocked;
-            }
+            if (Collision())
+                blockposition.Y -= emptyCell.Height;
+
             else
             {
                 counter += gameTime.ElapsedGameTime.TotalSeconds;
-                startposition.Y = ((int)counter * emptyCell.Height);
+                blockposition.Y = ((int)counter * emptyCell.Height);
+
             }
-                
+
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -86,9 +82,9 @@ namespace Tetris
                 for (int k = 0; k < x; k++)
                 {
                     if (tetrisblock[a, k] == true)
-                    {    
-                        Cellpos.X = emptyCell.Width * a + startposition.X; //Spawnt de tetromino op de startpositie
-                        Cellpos.Y = emptyCell.Height * k + startposition.Y;
+                    {
+                        Cellpos.X = emptyCell.Width * a + blockposition.X; //Spawnt de tetromino op de startpositie
+                        Cellpos.Y = emptyCell.Height * k + blockposition.Y;
                         spriteBatch.Draw(emptyCell, Cellpos, color);
                     }
                 }
@@ -97,31 +93,53 @@ namespace Tetris
         public void RotateL()
         {
             int x = tetrisblock.GetLength(0);
-            bool[,] Lrblock = new bool [x,x];
+            bool[,] Lrblock = new bool[x, x];
             for (int a = 0; a < x; a++)
             {
                 for (int k = 0; k < x; k++)
-                {      
-                    Lrblock[a, k] = tetrisblock[k, x- 1 - a];
-                }             
+                {
+                    Lrblock[a, k] = tetrisblock[k, x - 1 - a];
+                }
             }
             tetrisblock = Lrblock;
         }
-        
+
         public void RotateR()
         {
             int x = tetrisblock.GetLength(0);
-            bool[,] Rrblock = new bool [x,x];
+            bool[,] Rrblock = new bool[x, x];
             for (int a = 0; a < x; a++)
             {
                 for (int k = 0; k < x; k++)
-                {      
-                    Rrblock[a, k] = tetrisblock[x-1- k, a];
-                }             
+                {
+                    Rrblock[a, k] = tetrisblock[x - 1 - k, a];
+                }
             }
             tetrisblock = Rrblock;
         }
 
+        public bool Collision()
+        {
+            bool collision = false;
+            int x = tetrisblock.GetLength(0);
+            for (int a = 0; a < x; a++)
+            {
+                for (int k = 0; k < x; k++)
+                {
+                    if (tetrisblock[a, k] == true)
+                    {
+                        if (blockposition.X < 0 || blockposition.X > emptyCell.Width * 9 || blockposition.Y > emptyCell.Height * 20)
+                            collision = true;
+                        if (x == 4)
+                            if (blockposition.X < -2)
+                                collision = true;
+                    }
+                }
+
+            }
+            return collision;
+
+        }
         public void Clear()
         {
         }
