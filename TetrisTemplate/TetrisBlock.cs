@@ -18,6 +18,11 @@ namespace Tetris
         Point blockposition;
         protected Color color;
         double counter;
+        enum Blockstate
+        {
+            blocked,
+            moving
+        }
         public Color Blockcolor
         {
             get { return color; }
@@ -128,11 +133,9 @@ namespace Tetris
                 {
                     if (tetrisblock[a, k] == true)
                     {
-                        if (blockposition.X < 0 || blockposition.X > emptyCell.Width * 9 || blockposition.Y > emptyCell.Height * 20)
+
+                        if (blockposition.X + a*9< 0 || blockposition.X+ a*9 > emptyCell.Width * 10 || blockposition.Y +k*20 > emptyCell.Height * 20)
                             collision = true;
-                        if (x == 4)
-                            if (blockposition.X < -2)
-                                collision = true;
                     }
                 }
 
