@@ -17,8 +17,10 @@ namespace Tetris
         protected bool[,] tetrisblock;
         Vector2 startposition;
         protected Color color;
-        Vector2 Cellpos;
-        enum blockstate {moving, blocked};      
+        double counter;
+       
+        enum blockstate {moving, blocked};
+        blockstate currentblockstate = blockstate.moving;
         public Color Blockcolor
         {
             get { return color; }
@@ -44,22 +46,28 @@ namespace Tetris
             }
             else if (inputHelper.KeyPressed(Keys.Down))
             {
-                startposition.Y += emptyCell.Height;
+                counter += 1;
             }
         }
         public void Update(GameTime gameTime)
         {
-            if (Cellpos.Y < emptyCell.Height * 20)
+            if (startposition.Y >= emptyCell.Height * 20)
             {
-                Cellpos.Y = emptyCell.Height * 20;
-                Cellpos.Y += 0;
+                startposition.Y = emptyCell.Height * 20;
+                currentblockstate = blockstate.blocked;
             }
-            else if (Cellpos.Y > emptyCell.Height *20)
-            Cellpos.Y += (gameTime.TotalGameTime.Seconds * emptyCell.Height);
 
+            else
+            {
+                counter += gameTime.ElapsedGameTime.TotalSeconds;
+                startposition.Y = ((int)counter * emptyCell.Height);
+            }
+                
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            Vector2 Cellpos;
+
             for (int a = 0; a < 4; a++)
             {
                 for (int k = 0; k < 4; k++)
