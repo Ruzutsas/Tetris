@@ -17,7 +17,7 @@ namespace Tetris
         protected bool[,] tetrisblock;
         Vector2 startposition;
         protected Color color;
-        public Vector2 Cellpos;
+        Vector2 Cellpos;
         public Color Blockcolor
         {
             get { return color; }
@@ -31,18 +31,30 @@ namespace Tetris
         }
 
         public void HandleInput(GameTime gameTime, InputHelper inputHelper)
-        {          
+        {
             if (inputHelper.KeyPressed(Keys.Right))
             {
-                Cellpos.X += emptyCell.Width;
+               startposition.X += emptyCell.Width;
             }
             else if (inputHelper.KeyPressed(Keys.Left))
+            {   
+                startposition.X -= emptyCell.Width;
+                Console.WriteLine(startposition.X);
+            }
+            else if (inputHelper.KeyPressed(Keys.Down))
             {
-                Cellpos.X -= emptyCell.Width;
+                startposition.Y += emptyCell.Height;
             }
         }
         public void Update(GameTime gameTime)
         {
+            if (Cellpos.Y < emptyCell.Height * 20)
+            {
+                Cellpos.Y = emptyCell.Height * 20;
+                Cellpos.Y += 0;
+            }
+            else if (Cellpos.Y > emptyCell.Height *20)
+            Cellpos.Y += (gameTime.TotalGameTime.Seconds * emptyCell.Height);
 
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -52,25 +64,13 @@ namespace Tetris
                 for (int k = 0; k < 4; k++)
                 {
                     if (tetrisblock[a, k] == true)
-                    {
-                        Cellpos = new Vector2(emptyCell.Width * a + startposition.X, emptyCell.Height * k + startposition.Y); //Spawnt de tetromino op de startpositie
-                        if (Cellpos.Y >= emptyCell.Height * 20)
-                        {
-                            Cellpos.Y = emptyCell.Height * 20;
-                            Cellpos.Y += 0;
-                            break;
-                        }
-                        else
-                        {
-                            Cellpos.Y = (Cellpos.Y) + ((int)gameTime.TotalGameTime.Seconds * emptyCell.Height);
-                            spriteBatch.Draw(emptyCell, Cellpos, color);
-                        }
+                    {    
+                        Cellpos.X = emptyCell.Width * a + startposition.X; //Spawnt de tetromino op de startpositie
+                        Cellpos.Y = emptyCell.Height * k + startposition.Y;
+                        spriteBatch.Draw(emptyCell, Cellpos, color);
                     }
-                    if (Cellpos.Y >= emptyCell.Height * 20)
-                        break;
-                } 
+                }
             }
-            
         }
         public void Clear()
         {
@@ -105,7 +105,7 @@ namespace Tetris
 
         public void Reset()
         {
-            
+
         }
     }
 }
