@@ -19,11 +19,7 @@ namespace Tetris
         Point blockposition;
         protected Color color;
         double counter;
-        enum Blockstate
-        {
-            blocked,
-            moving
-        }
+
         public Color Blockcolor
         {
             get { return color; }
@@ -74,20 +70,8 @@ namespace Tetris
         {
             if (Collision())
             {
-                GetRandomBlock();
-                Vector2 Cellpos;
-                int x = tetrisblock.GetLength(0);
-                for (int a = 0; a < x; a++)
-                {
-                    for (int k = 0; k < x; k++)
-                    {
-                        Cellpos.X = emptyCell.Width * a + blockposition.X; //Spawnt de tetromino op de startpositie
-                        Cellpos.Y = emptyCell.Height * k + blockposition.Y;
-                        if (tetrisblock[a, k] == true)
-                        {
-                        }
-                    }
-                }
+                counter--;
+                NewBlock();
             }
             else
             {
@@ -142,20 +126,19 @@ namespace Tetris
         }
 
         public bool Collision()
-        { 
+        {
             bool collision = false;
-            Point gridpos = tetrisGrid.gridposition;
             bool[,] grid = tetrisGrid.grid;
             int x = tetrisblock.GetLength(0);
             for (int a = 0; a < x; a++)
             {
                 for (int k = 0; k < x; k++)
                 {
-                    if (tetrisblock[a, k] == true)                        
+                    if (tetrisblock[a, k] == true)
                     {
                         int blockX = blockposition.X + a * emptyCell.Width;
                         int blockY = blockposition.Y + k * emptyCell.Height;
-                        if (blockX < 0 || blockX > emptyCell.Width * 11 || blockY < 0 || blockY > emptyCell.Height * 18|| grid[k,a] == true)
+                        if (blockX < 0 || blockX > emptyCell.Width * 11 || blockY < 0 || blockY > emptyCell.Height * 18 || grid[a, k] == true)
                             collision = true;
                     }
                 }
@@ -171,33 +154,48 @@ namespace Tetris
         {
             return false;
         }
-
-        public static TetrisBlock GetRandomBlock()
+        public void NewBlock()
         {
-            int random = randomblocks.Next(1, 8);
-            switch (random)
+            GetRandomBlock();
+            bool[,] grid = tetrisGrid.grid;
+            int x = tetrisblock.GetLength(0);
+            for (int a = 0; a < x; a++)
             {
-                case 1:
-                    return new BlockI();
-                case 2:
-                    return new BlockJ();
-                case 3:
-                    return new BlockL();
-                case 4:
-                    return new BlockO();
-                case 5:
-                    return new BlockS();
-                case 6:
-                    return new BlockT();
-                default:
-                    return new BlockZ();
+                for (int k = 0; k < x; k++)
+                {
+                    if (tetrisblock[a, k] == true)
+                    {
+                        grid[a,k] = tetrisblock[a, k];
+                    }
+                }
             }
         }
+            public static TetrisBlock GetRandomBlock()
+            {
+                int random = randomblocks.Next(1, 8);
+                switch (random)
+                {
+                    case 1:
+                        return new BlockI();
+                    case 2:
+                        return new BlockJ();
+                    case 3:
+                        return new BlockL();
+                    case 4:
+                        return new BlockO();
+                    case 5:
+                        return new BlockS();
+                    case 6:
+                        return new BlockT();
+                    default:
+                        return new BlockZ();
+                }
+            }
 
-        public void Reset()
-        {
+            public void Reset()
+            {
 
+            }
         }
     }
-}
 
