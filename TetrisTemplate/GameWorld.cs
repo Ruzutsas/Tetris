@@ -54,7 +54,7 @@ class GameWorld
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
-        tetrisblock.HandleInput(gameTime, inputHelper);       
+        tetrisblock.HandleInput(gameTime, inputHelper);        
     }
 
     public void Update(GameTime gameTime)
