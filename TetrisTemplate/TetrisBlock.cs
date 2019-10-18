@@ -12,12 +12,14 @@ namespace Tetris
 {
     class TetrisBlock
     {
+        TetrisGrid tetrisGrid;
         static readonly Random randomblocks = new Random();
-        static Texture2D emptyCell;
-        protected bool[,] tetrisblock;
-        Vector2 startposition;
+        public Texture2D emptyCell;
+        public bool[,] tetrisblock;
+        Point blockposition;
         protected Color color;
-        static Vector2 Cellpos;
+        double counter;
+
         public Color Blockcolor
         {
             get { return color; }
@@ -25,39 +27,124 @@ namespace Tetris
 
         public TetrisBlock()
         {
+            tetrisGrid = new TetrisGrid();
             emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
-            startposition = new Vector2(emptyCell.Width * 4, 0);
+            blockposition = new Point(emptyCell.Width * 4, 0);
             Clear();
         }
 
         public void HandleInput(GameTime gameTime, InputHelper inputHelper)
-        {          
+        {
             if (inputHelper.KeyPressed(Keys.Right))
             {
-                Cellpos.X += emptyCell.Width;
+                blockposition.X += emptyCell.Width;
+                if (Collision())
+                    blockposition.X -= emptyCell.Width;
             }
             else if (inputHelper.KeyPressed(Keys.Left))
             {
-                Cellpos.X -= emptyCell.Width;
+                blockposition.X -= emptyCell.Width;
+                if (Collision())
+                    blockposition.X += emptyCell.Width;
+            }
+            else if (inputHelper.KeyPressed(Keys.Down))
+            {
+                counter++;
+                if (Collision())
+                    counter--;
+            }
+            else if (inputHelper.KeyPressed(Keys.A))
+            {
+                RotateL();
+                if (Collision())
+                    RotateR();
+            }
+            else if (inputHelper.KeyPressed(Keys.D))
+            {
+                RotateR();
+                if (Collision())
+                    RotateL();
             }
         }
         public void Update(GameTime gameTime)
         {
+            if (Collision())
+            {
+                counter--;
+                NewBlock();
+            }
+            else
+            {
+                counter += gameTime.ElapsedGameTime.TotalSeconds;
+                blockposition.Y = ((int)counter * emptyCell.Height);
+            }
         }
+
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            for (int a = 0; a < 4; a++)
+            Vector2 Cellpos;
+            int x = tetrisblock.GetLength(0);
+            for (int a = 0; a < x; a++)
             {
-                for (int k = 0; k < 4; k++)
+                for (int k = 0; k < x; k++)
                 {
                     if (tetrisblock[a, k] == true)
                     {
-                        Cellpos = new Vector2(emptyCell.Width * a + startposition.X, emptyCell.Height * k + startposition.Y); //Spawnt de tetromino op de startpositie
-                        Cellpos.Y = (Cellpos.Y) + ((int)gameTime.TotalGameTime.Seconds * emptyCell.Height);
+                        Cellpos.X = emptyCell.Width * a + blockposition.X; //Spawnt de tetromino op de startpositie
+                        Cellpos.Y = emptyCell.Height * k + blockposition.Y;
                         spriteBatch.Draw(emptyCell, Cellpos, color);
                     }
                 }
             }
+        }
+        public void RotateL()
+        {
+            int x = tetrisblock.GetLength(0);
+            bool[,] Lrblock = new bool[x, x];
+            for (int a = 0; a < x; a++)
+            {
+                for (int k = 0; k < x; k++)
+                {
+                    Lrblock[a, k] = tetrisblock[k, x - 1 - a];
+                }
+            }
+            tetrisblock = Lrblock;
+        }
+
+        public void RotateR()
+        {
+            int x = tetrisblock.GetLength(0);
+            bool[,] Rrblock = new bool[x, x];
+            for (int a = 0; a < x; a++)
+            {
+                for (int k = 0; k < x; k++)
+                {
+                    Rrblock[a, k] = tetrisblock[x - 1 - k, a];
+                }
+            }
+            tetrisblock = Rrblock;
+        }
+
+        public bool Collision()
+        {
+            bool collision = false;
+            bool[,] grid = tetrisGrid.grid;
+            int x = tetrisblock.GetLength(0);
+            for (int a = 0; a < x; a++)
+            {
+                for (int k = 0; k < x; k++)
+                {
+                    if (tetrisblock[a, k] == true)
+                    {
+                        int blockX = blockposition.X + a * emptyCell.Width;
+                        int blockY = blockposition.Y + k * emptyCell.Height;
+                        if (blockX < 0 || blockX > emptyCell.Width * 11 || blockY < 0 || blockY > emptyCell.Height * 18 || grid[a, k] == true)
+                            collision = true;
+                    }
+                }
+
+            }
+            return collision;
         }
         public void Clear()
         {
@@ -67,33 +154,48 @@ namespace Tetris
         {
             return false;
         }
-
-        public static TetrisBlock GetRandomBlock()
+        public void NewBlock()
         {
-            int random = randomblocks.Next(1, 8);
-            switch (random)
+            GetRandomBlock();
+            bool[,] grid = tetrisGrid.grid;
+            int x = tetrisblock.GetLength(0);
+            for (int a = 0; a < x; a++)
             {
-                case 1:
-                    return new BlockI();
-                case 2:
-                    return new BlockJ();
-                case 3:
-                    return new BlockL();
-                case 4:
-                    return new BlockO();
-                case 5:
-                    return new BlockS();
-                case 6:
-                    return new BlockT();
-                default:
-                    return new BlockZ();
+                for (int k = 0; k < x; k++)
+                {
+                    if (tetrisblock[a, k] == true)
+                    {
+                        grid[a,k] = tetrisblock[a, k];
+                    }
+                }
             }
         }
+            public static TetrisBlock GetRandomBlock()
+            {
+                int random = randomblocks.Next(1, 8);
+                switch (random)
+                {
+                    case 1:
+                        return new BlockI();
+                    case 2:
+                        return new BlockJ();
+                    case 3:
+                        return new BlockL();
+                    case 4:
+                        return new BlockO();
+                    case 5:
+                        return new BlockS();
+                    case 6:
+                        return new BlockT();
+                    default:
+                        return new BlockZ();
+                }
+            }
 
-        public void Reset()
-        {
-            
+            public void Reset()
+            {
+
+            }
         }
     }
-}
 
