@@ -42,7 +42,7 @@ class TetrisGrid
     /// </summary>
     /// <param name="gameTime">An object with information about the time that has passed in the game.</param>
     /// <param name="spriteBatch">The SpriteBatch used for drawing sprites and text.</param>
-    public void Draw(GameTime gameTime, SpriteBatch spriteBatch, TetrisBlock tetrisBlock)
+    public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         for (int i = 0; i < 12; i++)
         {
