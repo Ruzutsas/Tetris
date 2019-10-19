@@ -1,14 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Tetris;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Input;
 
 /// <summary>
 /// A class for representing the Tetris playing grid.
 /// </summary>
 class TetrisGrid
 {
-    public TetrisBlock tetrisblock;
-    public bool[,] grid = new bool[12, 20];
+    public int[,] grid = new int[12, 20];
 
     /// The sprite of a single empty cell in the grid.
     Texture2D emptyCell;
@@ -37,17 +42,18 @@ class TetrisGrid
     /// </summary>
     /// <param name="gameTime">An object with information about the time that has passed in the game.</param>
     /// <param name="spriteBatch">The SpriteBatch used for drawing sprites and text.</param>
-    public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+    public void Draw(GameTime gameTime, SpriteBatch spriteBatch, TetrisBlock tetrisBlock)
     {
         for (int i = 0; i < 12; i++)
         {
             for (int u = 0; u < 20; u++)
             {
-                if (grid[i, u] == false)
+                if (grid[i, u] == 0)
                 {
                     position = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
                     spriteBatch.Draw(emptyCell, position, Color.White);
                 }
+                
             }
         }
     }

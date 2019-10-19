@@ -10,15 +10,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Tetris
 {
-    class TetrisBlock
+    class TetrisBlock 
     {
         TetrisGrid tetrisGrid;
         public Texture2D emptyCell;
         public bool[,] tetrisblock;
         public Point blockposition;
-        protected Color color;
-        
-
+        public Color color;
         public Color Blockcolor
         {
             get { return color; }
@@ -34,7 +32,6 @@ namespace Tetris
 
         public void HandleInput(GameTime gameTime, InputHelper inputHelper)
         {
-           
         }
         public void Update(GameTime gameTime)
         {
