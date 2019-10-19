@@ -65,13 +65,19 @@ namespace Tetris
                 if (Collision())
                     RotateL();
             }
+            else if (inputHelper.KeyPressed(Keys.Space))
+            {
+                counter = 18;
+                if (Collision())
+                    counter--;
+            }
         }
         public void Update(GameTime gameTime)
         {
             if (Collision())
             {
                 counter--;
-                NewBlock();
+                GetRandomBlock();
             }
             else
             {
@@ -142,7 +148,7 @@ namespace Tetris
                             collision = true;
                     }
                 }
-
+             
             }
             return collision;
         }
@@ -156,7 +162,6 @@ namespace Tetris
         }
         public void NewBlock()
         {
-            GetRandomBlock();
             bool[,] grid = tetrisGrid.grid;
             int x = tetrisblock.GetLength(0);
             for (int a = 0; a < x; a++)
@@ -176,19 +181,19 @@ namespace Tetris
                 switch (random)
                 {
                     case 1:
-                        return new BlockI();
+                        return  new BlockI();
                     case 2:
-                        return new BlockJ();
+                        return  new BlockJ();
                     case 3:
-                        return new BlockL();
+                        return  new BlockL();
                     case 4:
-                        return new BlockO();
+                        return  new BlockO();
                     case 5:
-                        return new BlockS();
+                        return  new BlockS();
                     case 6:
-                        return new BlockT();
+                        return  new BlockT();
                     default:
-                        return new BlockZ();
+                        return  new BlockZ();
                 }
             }
 

@@ -59,7 +59,6 @@ class GameWorld
     public void Update(GameTime gameTime)
     {
         tetrisblock.Update(gameTime);
-        
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
