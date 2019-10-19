@@ -42,7 +42,6 @@ class GameWorld
     /// </summary>
     TetrisGrid grid;
     public double counter = 0;
-
     public TetrisBlock tetrisblock;
     static readonly Random randomblocks = new Random();
     public GameWorld()
@@ -58,25 +57,55 @@ class GameWorld
     {
         tetrisblock.HandleInput(gameTime, inputHelper);
         if (inputHelper.KeyPressed(Keys.Down))
+        {
+            counter++;
+            if (Collision())
+                counter--;
+        }
+        else if (inputHelper.KeyPressed(Keys.Space))
+        {
+            counter = 18;
+            if (Collision())
+                counter--;
+        }
+         if (inputHelper.KeyPressed(Keys.Right))                     //Beweegt de tetromino naar rechts
             {
-                counter++;
-                if (tetrisblock.Collision())
-                    counter--;
+                tetrisblock.blockposition.X += tetrisblock.emptyCell.Width;
+                if (Collision())
+                    tetrisblock.blockposition.X -= tetrisblock.emptyCell.Width;
+            }
+            else if (inputHelper.KeyPressed(Keys.Left))                 //Beweegt de tetromino naar links    
+            {
+                tetrisblock.blockposition.X -= tetrisblock.emptyCell.Width;
+                if (Collision())
+                    tetrisblock.blockposition.X += tetrisblock.emptyCell.Width;
+            }
+            else if (inputHelper.KeyPressed(Keys.A))                    //Roteert de tetromino linksom
+            {
+                RotateL();
+                if (Collision())
+                    RotateR();
+            }
+            else if (inputHelper.KeyPressed(Keys.D))                    //Roteert de tetromino rechtsom
+            {
+                RotateR();
+                if (Collision())
+                    RotateL();
             }
     }
 
     public void Update(GameTime gameTime)
     {
-            if (tetrisblock.Collision())
-            {
-                counter = 0;
-                Merge();
-            }
-            else
-            {
-                counter += gameTime.ElapsedGameTime.TotalSeconds;
-                tetrisblock.blockposition.Y = ((int)counter * tetrisblock.emptyCell.Height);
-            }
+        if (Collision())
+        {
+            counter = 0;
+            Merge();
+        }
+        else
+        {
+            counter += gameTime.ElapsedGameTime.TotalSeconds;
+            tetrisblock.blockposition.Y = ((int)counter * tetrisblock.emptyCell.Height);
+        }
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -119,16 +148,40 @@ class GameWorld
             {
                 if (tetrisblock.tetrisblock[a, k] == true)
                 {
-                        int blockX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
-                        int blockY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
-                        grid.grid[blockX,blockY] = tetrisblock.tetrisblock[a, k];
+                    int blockX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
+                    int blockY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
+                    grid.grid[blockX,blockY] = tetrisblock.tetrisblock[a, k];
                 }
             }
         }
         tetrisblock =  GetRandomBlock();
     }  
 
+     public bool Collision()
+     {
+        bool collision = false;
+        bool[,] grid = tetrisGrid.grid;
+        int x = tetrisblock.GetLength(0);
+        for (int a = 0; a < x; a++)
+        {
+            for (int k = 0; k < x; k++)
+            {
+                if (tetrisblock[a, k] == true)
+                {
+                    int blockX = tetrisblock.blockposition.X + a * tetrisblock.emptyCell.Width;
+                    int blockY = tetrisblock.blockposition.Y + k * tetrisblock.emptyCell.Height;
+                    if (blockX < 0 || blockX > emptyCell.Width * 11 || blockY < 0 || blockY > emptyCell.Height * 18 || grid[a, k] == true)
+                    {
+                        collision = true;                              
+                    }                    
+                }
+            }
+        }
+        return collision;
+     }
+
     public void Reset()
     {
     }
 }
+
