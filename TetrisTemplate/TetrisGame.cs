@@ -44,6 +44,7 @@ class TetrisGame : Game
         graphics.PreferredBackBufferHeight = ScreenSize.Y;
         MediaPlayer.IsRepeating = true;
         MediaPlayer.Play(Content.Load<Song>("TetrisMusic"));
+        MediaPlayer.Volume -= 0.90f;
         // create the input helper object
         inputHelper = new InputHelper();
     }

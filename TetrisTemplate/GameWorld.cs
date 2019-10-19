@@ -31,7 +31,6 @@ class GameWorld
     /// The main font of the game.
     /// </summary>
     SpriteFont font;
-    SoundEffect achtergrondmuziek;
     /// <summary>
     /// The current game state.
     /// </summary>
@@ -55,7 +54,7 @@ class GameWorld
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
-        if (inputHelper.KeyDown(Keys.Down))
+        if (inputHelper.KeyPressed(Keys.Down))
         {
             counter += 0.5;
             if (Collision())
@@ -170,7 +169,7 @@ class GameWorld
     public bool GameOver()
     {
         bool gameover = false;
-        if (tetrisblock.blockposition.Y <= tetrisblock.emptyCell.Height * 2 && tetrisblock.blockposition.Y >= tetrisblock.emptyCell.Height * 0 && Collision())
+        if (tetrisblock.blockposition.Y <= tetrisblock.emptyCell.Height * 2 && tetrisblock.blockposition.X >= tetrisblock.emptyCell.Width * 3 && tetrisblock.blockposition.X <= tetrisblock.emptyCell.Width * 6 && Collision())
             gameover = true;
         return gameover;
     }
