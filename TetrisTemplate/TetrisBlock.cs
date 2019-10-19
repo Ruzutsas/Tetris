@@ -93,7 +93,7 @@ namespace Tetris
                         Cellpos.X = emptyCell.Width * a + blockposition.X; //Spawnt de tetromino op de startpositie
                         Cellpos.Y = emptyCell.Height * k + blockposition.Y;
                         spriteBatch.Draw(emptyCell, Cellpos, color);
-                    }
+                    }                    
                 }
             }
         }
@@ -139,13 +139,15 @@ namespace Tetris
                         int blockX = blockposition.X + a * emptyCell.Width;
                         int blockY = blockposition.Y + k * emptyCell.Height;
                         if (blockX < 0 || blockX > emptyCell.Width * 11 || blockY < 0 || blockY > emptyCell.Height * 18 || grid[a, k] == true)
-                            collision = true;
+                        {
+                            collision = true;                              
+                        }                    
                     }
                 }
-
             }
             return collision;
         }
+
         public void Clear()
         {
         }
@@ -154,9 +156,9 @@ namespace Tetris
         {
             return false;
         }
+
         public void NewBlock()
-        {
-            GetRandomBlock();
+        {                      
             bool[,] grid = tetrisGrid.grid;
             int x = tetrisblock.GetLength(0);
             for (int a = 0; a < x; a++)
@@ -165,11 +167,13 @@ namespace Tetris
                 {
                     if (tetrisblock[a, k] == true)
                     {
-                        grid[a,k] = tetrisblock[a, k];
+                        grid[a,k] = tetrisblock[a, k];                       
                     }
                 }
             }
+            GetRandomBlock(); 
         }
+
             public static TetrisBlock GetRandomBlock()
             {
                 int random = randomblocks.Next(1, 8);
