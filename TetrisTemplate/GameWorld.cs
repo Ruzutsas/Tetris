@@ -41,7 +41,7 @@ class GameWorld
     /// The main grid of the game.
     /// </summary>
     TetrisGrid grid;
-    TetrisBlock tetrisblock;
+    public TetrisBlock tetrisblock;
     public GameWorld()
     {
         random = new Random();
@@ -70,6 +70,7 @@ class GameWorld
         spriteBatch.DrawString(font, "", Vector2.Zero, Color.Blue);
         spriteBatch.End();
     }
+
 
     public void Reset()
     {

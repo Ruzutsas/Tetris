@@ -70,8 +70,9 @@ namespace Tetris
         {
             if (Collision())
             {
-                counter--;
-                NewBlock();
+                counter = 0;
+                blockposition.Y -= emptyCell.Height;
+                Merge();
             }
             else
             {
@@ -146,6 +147,7 @@ namespace Tetris
             }
             return collision;
         }
+
         public void Clear()
         {
         }
@@ -154,21 +156,26 @@ namespace Tetris
         {
             return false;
         }
-        public void NewBlock()
+
+        public void Merge()
         {
-            GetRandomBlock();
             bool[,] grid = tetrisGrid.grid;
-            int x = tetrisblock.GetLength(0);
+            int x = tetrisblock.GetLength(1);
             for (int a = 0; a < x; a++)
             {
                 for (int k = 0; k < x; k++)
                 {
                     if (tetrisblock[a, k] == true)
                     {
-                        grid[a,k] = tetrisblock[a, k];
+                         int blockX = blockposition.X / emptyCell.Width + a;
+                         int blockY = blockposition.Y / emptyCell.Height + k;
+                         grid[blockX,blockY] = tetrisblock[a, k];
                     }
                 }
             }
+            TetrisBlock blokding =  GetRandomBlock();
+            tetrisblock = blokding.tetrisblock;
+            blockposition = new Point(emptyCell.Width * 4, 0);
         }
             public static TetrisBlock GetRandomBlock()
             {
