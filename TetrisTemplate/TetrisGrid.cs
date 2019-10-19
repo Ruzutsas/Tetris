@@ -81,6 +81,66 @@ class TetrisGrid
         }
     }
 
+    public void ClearLine()
+    {
+        for (int i = 0; i < 12; i++)
+        {
+            for (int u = 0; u < 20; u++)
+            {
+            Lineposition = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
+                for (int u = 0; i < Lineposition.X; u++ )
+                {
+                    fullrow = true;
+                    for (int i = 0; i < Lineposition.Y; i++)
+                    {
+                        if (grid[i, u] == 0)
+                            fullrow = false;
+                    }                
+                }                                                     
+            }
+        }
+    }
+
+    /*public void ClearLine() //gaat elke rij na of deze een leeg block bevat, als dit niet een geval is, is de rij dus vol en wordt er een collapse in werking gestelt
+    {
+        Vector2 LinePos = position;
+        for (int y = 19; y != 0; y--)
+        {
+            bool fullrow = true;
+            for (int x = 0; x != 12; x++)
+            {
+                if (grid[x, y] == 0)
+                {
+                    fullrow = false;
+                }
+                LinePos.X += emptyCell.Width;
+            }
+            if (fullrow)
+            {
+                Collapse(y);
+                y++; //anders skipt ie rijen als er meerdere tegelijk zijn               
+            }
+            LinePos.X = 0;
+            LinePos.Y += emptyCell.Height;
+        }
+    }
+
+    protected void Collapse(int yArg) //maakt van een volle rij een rij met lege blocks en schuift deze als het ware omhoog door continu met de rij erboven te swappen, hierdoor schuiven de rijen erboven dus ook meteen naar beneden.
+    {
+        Vector2 LinePos = position;
+        for (int y = yArg; y != 0; y--)
+        {
+            for (int x = 0; x != 12; x++)
+            {
+                grid[x, y] = grid[x, y-1];
+                grid[x, y-1] = 0;
+                LinePos.X += emptyCell.Width;
+            }
+            LinePos.X = 0;
+            LinePos.Y += emptyCell.Height;
+        }
+    }*/
+
     /// <summary>
     /// Clears the grid.
     /// </summary>
