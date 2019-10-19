@@ -12,11 +12,12 @@ namespace Tetris
 {
     class TetrisBlock 
     {
-        TetrisGrid tetrisGrid;
         public Texture2D emptyCell;
         public int[,] tetrisblock;
         public Point blockposition;
         public Color color;
+        private int blocksize = 30;
+
         public Color Blockcolor
         {
             get { return color; }
@@ -24,9 +25,8 @@ namespace Tetris
 
         public TetrisBlock()
         {
-            tetrisGrid = new TetrisGrid();
             emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
-            blockposition = new Point(emptyCell.Width * 4, 0);
+            blockposition = new Point(4 *blocksize, 0);
             Clear();
         }
 

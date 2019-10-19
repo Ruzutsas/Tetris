@@ -42,7 +42,7 @@ class TetrisGrid
     /// </summary>
     /// <param name="gameTime">An object with information about the time that has passed in the game.</param>
     /// <param name="spriteBatch">The SpriteBatch used for drawing sprites and text.</param>
-    public void Draw(GameTime gameTime, SpriteBatch spriteBatch, TetrisBlock tetrisBlock)
+    public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         for (int i = 0; i < 12; i++)
         {
@@ -83,12 +83,9 @@ class TetrisGrid
 
     public void DetectFullLine()
     {
-        for (int x = 0; x < 12; x++)
-        {
-            for (int y = 0; y < 20; y++)
-            {
-            Vector2 Lineposition = new Vector2(x * emptyCell.Width, y * emptyCell.Height);
-                for (int u = 20; u != 0; u-- )
+
+        Vector2 Lineposition = position;
+                for (int u = Height - 1; u != 0; u--)
                 {
                     bool fullrow = true;
                     for (int i = 0; i != Lineposition.X; i++)
@@ -105,8 +102,6 @@ class TetrisGrid
                     Lineposition.X = 0;
                     Lineposition.Y += emptyCell.Height;
                 }                                                     
-            }
-        }
     }
 
     protected void ClearLine(int j)
