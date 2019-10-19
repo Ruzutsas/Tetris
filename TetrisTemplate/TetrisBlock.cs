@@ -13,10 +13,9 @@ namespace Tetris
     class TetrisBlock
     {
         TetrisGrid tetrisGrid;
-        static readonly Random randomblocks = new Random();
         public Texture2D emptyCell;
         public bool[,] tetrisblock;
-        Point blockposition;
+        public Point blockposition;
         protected Color color;
         double counter;
 
@@ -47,12 +46,6 @@ namespace Tetris
                 if (Collision())
                     blockposition.X += emptyCell.Width;
             }
-            else if (inputHelper.KeyPressed(Keys.Down))
-            {
-                counter++;
-                if (Collision())
-                    counter--;
-            }
             else if (inputHelper.KeyPressed(Keys.A))
             {
                 RotateL();
@@ -68,17 +61,7 @@ namespace Tetris
         }
         public void Update(GameTime gameTime)
         {
-            if (Collision())
-            {
-                counter = 0;
-                blockposition.Y -= emptyCell.Height;
-                Merge();
-            }
-            else
-            {
-                counter += gameTime.ElapsedGameTime.TotalSeconds;
-                blockposition.Y = ((int)counter * emptyCell.Height);
-            }
+
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -157,47 +140,7 @@ namespace Tetris
             return false;
         }
 
-        public void Merge()
-        {
-            bool[,] grid = tetrisGrid.grid;
-            int x = tetrisblock.GetLength(1);
-            for (int a = 0; a < x; a++)
-            {
-                for (int k = 0; k < x; k++)
-                {
-                    if (tetrisblock[a, k] == true)
-                    {
-                         int blockX = blockposition.X / emptyCell.Width + a;
-                         int blockY = blockposition.Y / emptyCell.Height + k;
-                         grid[blockX,blockY] = tetrisblock[a, k];
-                    }
-                }
-            }
-            TetrisBlock blokding =  GetRandomBlock();
-            tetrisblock = blokding.tetrisblock;
-            blockposition = new Point(emptyCell.Width * 4, 0);
-        }
-            public static TetrisBlock GetRandomBlock()
-            {
-                int random = randomblocks.Next(1, 8);
-                switch (random)
-                {
-                    case 1:
-                        return new BlockI();
-                    case 2:
-                        return new BlockJ();
-                    case 3:
-                        return new BlockL();
-                    case 4:
-                        return new BlockO();
-                    case 5:
-                        return new BlockS();
-                    case 6:
-                        return new BlockT();
-                    default:
-                        return new BlockZ();
-                }
-            }
+         
 
             public void Reset()
             {
