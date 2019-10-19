@@ -12,8 +12,6 @@ namespace Tetris
 {
     class TetrisBlock 
     {
-        GameWorld gameWorld;
-        static Random randomblocks = new Random();
         TetrisGrid tetrisGrid;
         public Texture2D emptyCell;
         public int[,] tetrisblock;
