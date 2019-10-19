@@ -44,13 +44,14 @@ class GameWorld
     public double counter = 0;
     public TetrisBlock tetrisblock;
     readonly Random randomblocks = new Random();
+
     public GameWorld()
     {
         random = new Random();
         gameState = GameState.Playing;
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
         tetrisblock = GetRandomBlock();
-        grid = new TetrisGrid();
+        grid = new TetrisGrid();       
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
@@ -99,7 +100,6 @@ class GameWorld
         }
 
     }
-
 
     public void Update(GameTime gameTime)
     {
@@ -156,8 +156,7 @@ class GameWorld
                 return new BlockT();
             default:
                 return new BlockZ();
-
-        }
+        }       
     }
     public bool Collision()
     {
@@ -206,6 +205,7 @@ class GameWorld
         if (GameOver())
             gameState = GameState.GameOver;
         tetrisblock = GetRandomBlock();
+        grid.DetectFullLine();
     }
 
 
