@@ -55,19 +55,44 @@ class GameWorld
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
-    {
-        tetrisblock.HandleInput(gameTime, inputHelper);
+    {       
         if (inputHelper.KeyPressed(Keys.Down))
             {
                 counter++;
-                if (tetrisblock.Collision())
+                if (Collision())
                     counter--;
             }
+       else if (inputHelper.KeyPressed(Keys.Right))
+        {
+            tetrisblock.blockposition.X += tetrisblock.emptyCell.Width;
+            if (Collision())
+                tetrisblock.blockposition.X -= tetrisblock.emptyCell.Width;
+        }
+        else if (inputHelper.KeyPressed(Keys.Left))
+        {
+            tetrisblock.blockposition.X -= tetrisblock.emptyCell.Width;
+            if (Collision())
+                tetrisblock.blockposition.X += tetrisblock.emptyCell.Width;
+        }
+        else if (inputHelper.KeyPressed(Keys.A))
+        {
+            tetrisblock.RotateL();
+            if (Collision())
+                tetrisblock.RotateR();
+        }
+        else if (inputHelper.KeyPressed(Keys.D))
+        {
+            tetrisblock.RotateR();
+            if (Collision())
+                tetrisblock.RotateL();
+        }
+        
+
     }
 
     public void Update(GameTime gameTime)
     {
-            if (tetrisblock.Collision())
+            if (Collision())
             {
                 counter = 0;
                 Merge();
@@ -82,7 +107,7 @@ class GameWorld
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         spriteBatch.Begin();
-        grid.Draw(gameTime, spriteBatch);
+        grid.Draw(gameTime, spriteBatch, tetrisblock);
         tetrisblock.Draw(gameTime, spriteBatch);
         spriteBatch.DrawString(font, "", Vector2.Zero, Color.Blue);
         spriteBatch.End();
@@ -109,6 +134,28 @@ class GameWorld
                 return new BlockZ();
         }
      }
+    public bool Collision()
+    {
+        bool collision = false;
+        int x = tetrisblock.tetrisblock.GetLength(0);
+        for (int a = 0; a < x; a++)
+        {
+            for (int k = 0; k < x; k++)
+            {
+                if (tetrisblock.tetrisblock[a, k] == true)
+                {
+                    int gridX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
+                    int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
+                    int blockX = tetrisblock.blockposition.X + a * tetrisblock.emptyCell.Width;
+                    int blockY = tetrisblock.blockposition.Y + k * tetrisblock.emptyCell.Height;
+                    if (blockX < 0 || blockX > tetrisblock.emptyCell.Width * 11 || blockY < 0 || blockY > tetrisblock.emptyCell.Height * 18 || grid.grid[gridX, gridY + 1] == true)
+                        collision = true;
+                }
+            }
+
+        }
+        return collision;
+    }
 
     public void Merge()
     {

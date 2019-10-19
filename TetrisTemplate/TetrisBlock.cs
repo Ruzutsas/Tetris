@@ -10,15 +10,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Tetris
 {
-    class TetrisBlock
+    class TetrisBlock 
     {
         TetrisGrid tetrisGrid;
         public Texture2D emptyCell;
         public bool[,] tetrisblock;
         public Point blockposition;
-        protected Color color;
-        double counter;
-
+        public Color color;
         public Color Blockcolor
         {
             get { return color; }
@@ -34,36 +32,7 @@ namespace Tetris
 
         public void HandleInput(GameTime gameTime, InputHelper inputHelper)
         {
-            if (inputHelper.KeyPressed(Keys.Right))
-            {
-                blockposition.X += emptyCell.Width;
-                if (Collision())
-                    blockposition.X -= emptyCell.Width;
-            }
-            else if (inputHelper.KeyPressed(Keys.Left))
-            {
-                blockposition.X -= emptyCell.Width;
-                if (Collision())
-                    blockposition.X += emptyCell.Width;
-            }
-            else if (inputHelper.KeyPressed(Keys.A))
-            {
-                RotateL();
-                if (Collision())
-                    RotateR();
-            }
-            else if (inputHelper.KeyPressed(Keys.D))
-            {
-                RotateR();
-                if (Collision())
-                    RotateL();
-            }
-            else if (inputHelper.KeyPressed(Keys.Space))
-            {
-                counter = 18;
-                if (Collision())
-                    counter--;
-            }
+
         }
         public void Update(GameTime gameTime)
         {
@@ -114,27 +83,6 @@ namespace Tetris
             tetrisblock = Rrblock;
         }
 
-        public bool Collision()
-        {
-            bool collision = false;
-            bool[,] grid = tetrisGrid.grid;
-            int x = tetrisblock.GetLength(0);
-            for (int a = 0; a < x; a++)
-            {
-                for (int k = 0; k < x; k++)
-                {
-                    if (tetrisblock[a, k] == true)
-                    {
-                        int blockX = blockposition.X + a * emptyCell.Width;
-                        int blockY = blockposition.Y + k * emptyCell.Height;
-                        if (blockX < 0 || blockX > emptyCell.Width * 11 || blockY < 0 || blockY > emptyCell.Height * 18 || grid[a, k] == true)
-                            collision = true;
-                    }
-                }
-             
-            }
-            return collision;
-        }
 
         public void Clear()
         {
