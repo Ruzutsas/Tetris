@@ -41,25 +41,42 @@ class GameWorld
     /// The main grid of the game.
     /// </summary>
     TetrisGrid grid;
-    TetrisBlock tetrisblock;
+    public double counter = 0;
+
+    public TetrisBlock tetrisblock;
+    static readonly Random randomblocks = new Random();
     public GameWorld()
     {
         random = new Random();
         gameState = GameState.Playing;
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
-        tetrisblock = TetrisBlock.GetRandomBlock();
+        tetrisblock = GetRandomBlock();
         grid = new TetrisGrid();
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
         tetrisblock.HandleInput(gameTime, inputHelper);
+        if (inputHelper.KeyPressed(Keys.Down))
+            {
+                counter++;
+                if (tetrisblock.Collision())
+                    counter--;
+            }
     }
 
     public void Update(GameTime gameTime)
     {
-        tetrisblock.Update(gameTime);
-        
+            if (tetrisblock.Collision())
+            {
+                counter = 0;
+                Merge();
+            }
+            else
+            {
+                counter += gameTime.ElapsedGameTime.TotalSeconds;
+                tetrisblock.blockposition.Y = ((int)counter * tetrisblock.emptyCell.Height);
+            }
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -70,6 +87,46 @@ class GameWorld
         spriteBatch.DrawString(font, "", Vector2.Zero, Color.Blue);
         spriteBatch.End();
     }
+
+     public static TetrisBlock GetRandomBlock()
+     {
+        int random = randomblocks.Next(1, 8);
+        switch (random)
+        {
+            case 1:
+                return new BlockI();
+            case 2:
+                return new BlockJ();
+            case 3:
+                return new BlockL();
+            case 4:
+                return new BlockO();
+            case 5:
+                return new BlockS();
+            case 6:
+                return new BlockT();
+            default:
+                return new BlockZ();
+        }
+     }
+
+    public void Merge()
+    {
+        int x = tetrisblock.tetrisblock.GetLength(1);
+        for (int a = 0; a < x; a++)
+        {
+            for (int k = 0; k < x; k++)
+            {
+                if (tetrisblock.tetrisblock[a, k] == true)
+                {
+                        int blockX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
+                        int blockY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
+                        grid.grid[blockX,blockY] = tetrisblock.tetrisblock[a, k];
+                }
+            }
+        }
+        tetrisblock =  GetRandomBlock();
+    }  
 
     public void Reset()
     {

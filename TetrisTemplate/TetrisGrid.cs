@@ -8,7 +8,6 @@ class TetrisGrid
 {
     public bool[,] grid = new bool[12, 20];
 
-
     /// The sprite of a single empty cell in the grid.
     Texture2D emptyCell;
 
@@ -28,7 +27,6 @@ class TetrisGrid
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
         position = Vector2.Zero;
-
         Clear();
     }
 

@@ -13,10 +13,9 @@ namespace Tetris
     class TetrisBlock
     {
         TetrisGrid tetrisGrid;
-        static readonly Random randomblocks = new Random();
         public Texture2D emptyCell;
         public bool[,] tetrisblock;
-        Point blockposition;
+        public Point blockposition;
         protected Color color;
         double counter;
 
@@ -47,12 +46,6 @@ namespace Tetris
                 if (Collision())
                     blockposition.X += emptyCell.Width;
             }
-            else if (inputHelper.KeyPressed(Keys.Down))
-            {
-                counter++;
-                if (Collision())
-                    counter--;
-            }
             else if (inputHelper.KeyPressed(Keys.A))
             {
                 RotateL();
@@ -65,19 +58,15 @@ namespace Tetris
                 if (Collision())
                     RotateL();
             }
+            else if (inputHelper.KeyPressed(Keys.Space))
+            {
+                counter = 18;
+                if (Collision())
+                    counter--;
+            }
         }
         public void Update(GameTime gameTime)
         {
-            if (Collision())
-            {
-                counter--;
-                NewBlock();
-            }
-            else
-            {
-                counter += gameTime.ElapsedGameTime.TotalSeconds;
-                blockposition.Y = ((int)counter * emptyCell.Height);
-            }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
