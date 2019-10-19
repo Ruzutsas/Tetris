@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using System;
 using Tetris;
 
@@ -30,12 +31,11 @@ class GameWorld
     /// The main font of the game.
     /// </summary>
     SpriteFont font;
-
+    SoundEffect achtergrondmuziek;
     /// <summary>
     /// The current game state.
     /// </summary>
     GameState gameState;
-    
 
     /// <summary>
     /// The main grid of the game.
@@ -43,7 +43,7 @@ class GameWorld
     TetrisGrid grid;
     public double counter = 0;
     public TetrisBlock tetrisblock;
-    static Random randomblocks = new Random();
+    static readonly Random randomblocks = new Random();
     public GameWorld()
     {
         random = new Random();
@@ -54,20 +54,23 @@ class GameWorld
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
-    {       
-        if (inputHelper.KeyPressed(Keys.Down))
+    {
+        if (inputHelper.KeyDown(Keys.Down))
         {
-            counter++;
+            counter += 0.5;
             if (Collision())
                 counter--;
         }
         else if (inputHelper.KeyPressed(Keys.Space))
         {
-            counter = 18;
-            if (Collision())
-                counter--;
+            while (!Collision())
+            {
+                tetrisblock.blockposition.Y++;
+                if (Collision())
+                    break;
+            }
         }
-       else if (inputHelper.KeyPressed(Keys.Right)) //Beweegt de tetromino naar rechts
+        else if (inputHelper.KeyPressed(Keys.Right)) //Beweegt de tetromino naar rechts
         {
             tetrisblock.blockposition.X += tetrisblock.emptyCell.Width;
             if (Collision())
@@ -91,7 +94,7 @@ class GameWorld
             if (Collision())
                 tetrisblock.RotateL();
         }
-        
+
 
     }
 
@@ -116,13 +119,13 @@ class GameWorld
         grid.Draw(gameTime, spriteBatch, tetrisblock);
         tetrisblock.Draw(gameTime, spriteBatch);
         spriteBatch.DrawString(font, "", Vector2.Zero, Color.Blue);
-        if(gameState == GameState.GameOver)
+        if (gameState == GameState.GameOver)
             spriteBatch.DrawString(font, "GAME OVER", new Vector2(300, 500), Color.Blue);
         spriteBatch.End();
     }
 
-     public static TetrisBlock GetRandomBlock()
-     {
+    public static TetrisBlock GetRandomBlock()
+    {
         int random = randomblocks.Next(1, 8);
         switch (random)
         {
@@ -141,7 +144,7 @@ class GameWorld
             default:
                 return new BlockZ();
         }
-     }
+    }
     public bool Collision()
     {
         bool collision = false;
@@ -156,19 +159,23 @@ class GameWorld
                     int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
                     int blockX = tetrisblock.blockposition.X + a * tetrisblock.emptyCell.Width;
                     int blockY = tetrisblock.blockposition.Y + k * tetrisblock.emptyCell.Height;
-                    if (blockX < 0 || blockX > tetrisblock.emptyCell.Width * 11 || blockY < 0 || blockY > tetrisblock.emptyCell.Height * 18 || grid.grid[gridX, gridY + 1] != 0)
+                    if (blockX < 0 || blockX > tetrisblock.emptyCell.Width * 11 || blockY < 0 || blockY >= tetrisblock.emptyCell.Height * 19 || grid.grid[gridX, gridY + 1] != 0)
                         collision = true;
                 }
             }
         }
-        if (GameOver())
-            gameState = GameState.GameOver;
         return collision;
     }
 
     public bool GameOver()
     {
         bool gameover = false;
+        if (tetrisblock.blockposition.Y <= tetrisblock.emptyCell.Height * 2 && tetrisblock.blockposition.Y >= tetrisblock.emptyCell.Height * 0 && Collision())
+            gameover = true;
+        return gameover;
+    }
+    public void Merge()
+    {
         int x = tetrisblock.tetrisblock.GetLength(0);
         for (int a = 0; a < x; a++)
         {
@@ -178,35 +185,15 @@ class GameWorld
                 {
                     int gridX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
                     int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
-                    int blockY = tetrisblock.blockposition.Y + k * tetrisblock.emptyCell.Height;
-                    if (blockY < 0 && grid.grid[gridX, gridY + 1] != 0)
-                        gameover = true;
-                }
-            }
-
-        }
-        return gameover;
-    }
-    public void Merge()
-    {
-        int x = tetrisblock.tetrisblock.GetLength(1);
-        for (int a = 0; a < x; a++)
-        {
-            for (int k = 0; k < x; k++)
-            {
-                if (tetrisblock.tetrisblock[a, k] != 0)
-                {
-                    int gridX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
-                    int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
-                    grid.grid[gridX,gridY] = tetrisblock.tetrisblock[a, k];
+                    grid.grid[gridX, gridY] = tetrisblock.tetrisblock[a, k];
                 }
             }
         }
         if (GameOver())
             gameState = GameState.GameOver;
 
-        tetrisblock =  GetRandomBlock();
-    }  
+        tetrisblock = GetRandomBlock();
+    }
 
 
     public void Reset()

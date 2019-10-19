@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
 using Tetris;
 class TetrisGame : Game
 {
@@ -41,7 +42,8 @@ class TetrisGame : Game
         ScreenSize = new Point(800, 600);
         graphics.PreferredBackBufferWidth = ScreenSize.X;
         graphics.PreferredBackBufferHeight = ScreenSize.Y;
-
+        MediaPlayer.IsRepeating = true;
+        MediaPlayer.Play(Content.Load<Song>("TetrisMusic"));
         // create the input helper object
         inputHelper = new InputHelper();
     }
