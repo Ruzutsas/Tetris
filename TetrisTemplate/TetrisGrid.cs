@@ -81,6 +81,56 @@ class TetrisGrid
         }
     }
 
+    public void DetectFullLine()
+    {
+        for (int x = 0; x < 12; x++)
+        {
+            for (int y = 0; y < 20; y++)
+            {
+            Vector2 Lineposition = new Vector2(x * emptyCell.Width, y * emptyCell.Height);
+                for (int u = 20; u != 0; u-- )
+                {
+                    bool fullrow = true;
+                    for (int i = 0; i != Lineposition.X; i++)
+                    {
+                        if (grid[i, u] == 0)
+                            fullrow = false;
+                        Lineposition.X += emptyCell.Width;
+                    }
+                    if (fullrow)
+                    {
+                       ClearLine(u);
+                       u++;
+                    }
+                    Lineposition.X = 0;
+                    Lineposition.Y += emptyCell.Height;
+                }                                                     
+            }
+        }
+    }
+
+    protected void ClearLine(int j)
+    {
+        for (int x = 0; x < 12; x++)
+        {
+            for (int y = 0; y < 20; y++)
+            {
+                Vector2 Lineposition = new Vector2(x * emptyCell.Width, y * emptyCell.Height);
+                for (int u = j; u != 0; u--)
+                {
+                    for (int i = 0; i != Lineposition.X; i++)
+                    {
+                        grid[i, u] = grid[i, u - 1];
+                        grid[i, u - 1] = 0;
+                        Lineposition.X += emptyCell.Width;
+                    }
+                    Lineposition.X = 0;
+                    Lineposition.Y += emptyCell.Height;
+                }
+            }
+        }    
+    }
+      
     /// <summary>
     /// Clears the grid.
     /// </summary>
