@@ -13,7 +13,6 @@ using Microsoft.Xna.Framework.Input;
 /// </summary>
 class TetrisGrid
 {
-
     public int[,] grid = new int[12, 20];
 
     /// The sprite of a single empty cell in the grid.
@@ -45,7 +44,6 @@ class TetrisGrid
     /// <param name="spriteBatch">The SpriteBatch used for drawing sprites and text.</param>
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch, TetrisBlock tetrisBlock)
     {
-
         for (int i = 0; i < 12; i++)
         {
             for (int u = 0; u < 20; u++)
@@ -81,8 +79,6 @@ class TetrisGrid
                 }
             }
         }
-
-
     }
 
     /// <summary>

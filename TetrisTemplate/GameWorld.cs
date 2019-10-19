@@ -42,7 +42,6 @@ class GameWorld
     /// </summary>
     TetrisGrid grid;
     public double counter = 0;
-
     public TetrisBlock tetrisblock;
     static Random randomblocks = new Random();
     public GameWorld()
@@ -57,8 +56,20 @@ class GameWorld
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {       
         if (inputHelper.KeyPressed(Keys.Down))
+        {
+            counter++;
+            if (Collision())
+                counter--;
+        }
+        else if (inputHelper.KeyPressed(Keys.Space))
+        {
+            counter = 18;
+            if (Collision())
+                counter--;
+        }
+         if (inputHelper.KeyPressed(Keys.Right))                     //Beweegt de tetromino naar rechts
             {
-                counter++;
+                 counter++;
                 if (Collision())
                     counter--;
             }
@@ -94,14 +105,30 @@ class GameWorld
     {
             if (Collision())
             {
-                counter = 0;
-                Merge();
+                RotateL();
+                if (Collision())
+                    RotateR();
             }
-            else
+            else if (inputHelper.KeyPressed(Keys.D))                    //Roteert de tetromino rechtsom
             {
-                counter += gameTime.ElapsedGameTime.TotalSeconds;
-                tetrisblock.blockposition.Y = ((int)counter * tetrisblock.emptyCell.Height);
+                RotateR();
+                if (Collision())
+                    RotateL();
             }
+    }
+
+    public void Update(GameTime gameTime)
+    {
+        if (Collision())
+        {
+            counter = 0;
+            Merge();
+        }
+        else
+        {
+            counter += gameTime.ElapsedGameTime.TotalSeconds;
+            tetrisblock.blockposition.Y = ((int)counter * tetrisblock.emptyCell.Height);
+        }
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -190,16 +217,40 @@ class GameWorld
             {
                 if (tetrisblock.tetrisblock[a, k] != 0)
                 {
-                        int blockX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
-                        int blockY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
-                        grid.grid[blockX,blockY] = tetrisblock.tetrisblock[a, k];
+                    int blockX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
+                    int blockY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
+                    grid.grid[blockX,blockY] = tetrisblock.tetrisblock[a, k];
                 }
             }
         }
         tetrisblock =  GetRandomBlock();
     }  
 
+     public bool Collision()
+     {
+        bool collision = false;
+        bool[,] grid = tetrisGrid.grid;
+        int x = tetrisblock.GetLength(0);
+        for (int a = 0; a < x; a++)
+        {
+            for (int k = 0; k < x; k++)
+            {
+                if (tetrisblock[a, k] == true)
+                {
+                    int blockX = tetrisblock.blockposition.X + a * tetrisblock.emptyCell.Width;
+                    int blockY = tetrisblock.blockposition.Y + k * tetrisblock.emptyCell.Height;
+                    if (blockX < 0 || blockX > emptyCell.Width * 11 || blockY < 0 || blockY > emptyCell.Height * 18 || grid[a, k] == true)
+                    {
+                        collision = true;                              
+                    }                    
+                }
+            }
+        }
+        return collision;
+     }
+
     public void Reset()
     {
     }
 }
+

@@ -33,7 +33,6 @@ namespace Tetris
 
         public void HandleInput(GameTime gameTime, InputHelper inputHelper)
         {
-
         }
         public void Update(GameTime gameTime)
         {
@@ -84,7 +83,6 @@ namespace Tetris
             tetrisblock = Rrblock;
         }
 
-
         public void Clear()
         {
         }
@@ -94,10 +92,10 @@ namespace Tetris
             return false;
         }
 
-            public void Reset()
-            {
+        public void Reset()
+        {
 
-            }
         }
     }
+}
 
