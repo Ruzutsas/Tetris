@@ -81,66 +81,56 @@ class TetrisGrid
         }
     }
 
-    public void ClearLine()
+    public void DetectFullLine()
     {
-        for (int i = 0; i < 12; i++)
+        for (int x = 0; x < 12; x++)
         {
-            for (int u = 0; u < 20; u++)
+            for (int y = 0; y < 20; y++)
             {
-            Lineposition = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
-                for (int u = 0; i < Lineposition.X; u++ )
+            Vector2 Lineposition = new Vector2(x * emptyCell.Width, y * emptyCell.Height);
+                for (int u = 20; u != 0; u-- )
                 {
-                    fullrow = true;
-                    for (int i = 0; i < Lineposition.Y; i++)
+                    bool fullrow = true;
+                    for (int i = 0; i != Lineposition.X; i++)
                     {
                         if (grid[i, u] == 0)
                             fullrow = false;
-                    }                
+                        Lineposition.X += emptyCell.Width;
+                    }
+                    if (fullrow)
+                    {
+                       ClearLine(u);
+                       u++;
+                    }
+                    Lineposition.X = 0;
+                    Lineposition.Y += emptyCell.Height;
                 }                                                     
             }
         }
     }
 
-    /*public void ClearLine() //gaat elke rij na of deze een leeg block bevat, als dit niet een geval is, is de rij dus vol en wordt er een collapse in werking gestelt
+    protected void ClearLine(int j)
     {
-        Vector2 LinePos = position;
-        for (int y = 19; y != 0; y--)
+        for (int x = 0; x < 12; x++)
         {
-            bool fullrow = true;
-            for (int x = 0; x != 12; x++)
+            for (int y = 0; y < 20; y++)
             {
-                if (grid[x, y] == 0)
+                Vector2 Lineposition = new Vector2(x * emptyCell.Width, y * emptyCell.Height);
+                for (int u = j; u != 0; u--)
                 {
-                    fullrow = false;
+                    for (int i = 0; i != Lineposition.X; i++)
+                    {
+                        grid[i, u] = grid[i, u - 1];
+                        grid[i, u - 1] = 0;
+                        Lineposition.X += emptyCell.Width;
+                    }
+                    Lineposition.X = 0;
+                    Lineposition.Y += emptyCell.Height;
                 }
-                LinePos.X += emptyCell.Width;
             }
-            if (fullrow)
-            {
-                Collapse(y);
-                y++; //anders skipt ie rijen als er meerdere tegelijk zijn               
-            }
-            LinePos.X = 0;
-            LinePos.Y += emptyCell.Height;
-        }
+        }    
     }
-
-    protected void Collapse(int yArg) //maakt van een volle rij een rij met lege blocks en schuift deze als het ware omhoog door continu met de rij erboven te swappen, hierdoor schuiven de rijen erboven dus ook meteen naar beneden.
-    {
-        Vector2 LinePos = position;
-        for (int y = yArg; y != 0; y--)
-        {
-            for (int x = 0; x != 12; x++)
-            {
-                grid[x, y] = grid[x, y-1];
-                grid[x, y-1] = 0;
-                LinePos.X += emptyCell.Width;
-            }
-            LinePos.X = 0;
-            LinePos.Y += emptyCell.Height;
-        }
-    }*/
-
+      
     /// <summary>
     /// Clears the grid.
     /// </summary>
