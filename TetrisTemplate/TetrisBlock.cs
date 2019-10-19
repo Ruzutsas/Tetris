@@ -12,9 +12,10 @@ namespace Tetris
 {
     class TetrisBlock 
     {
+        static Random randomblocks = new Random();
         TetrisGrid tetrisGrid;
         public Texture2D emptyCell;
-        public bool[,] tetrisblock;
+        public int[,] tetrisblock;
         public Point blockposition;
         public Color color;
         public Color Blockcolor
@@ -46,7 +47,7 @@ namespace Tetris
             {
                 for (int k = 0; k < x; k++)
                 {
-                    if (tetrisblock[a, k] == true)
+                    if (tetrisblock[a, k] != 0)
                     {
                         Cellpos.X = emptyCell.Width * a + blockposition.X; //Spawnt de tetromino op de startpositie
                         Cellpos.Y = emptyCell.Height * k + blockposition.Y;
@@ -58,7 +59,7 @@ namespace Tetris
         public void RotateL()
         {
             int x = tetrisblock.GetLength(0);
-            bool[,] Lrblock = new bool[x, x];
+            int[,] Lrblock = new int[x, x];
             for (int a = 0; a < x; a++)
             {
                 for (int k = 0; k < x; k++)
@@ -72,7 +73,7 @@ namespace Tetris
         public void RotateR()
         {
             int x = tetrisblock.GetLength(0);
-            bool[,] Rrblock = new bool[x, x];
+            int[,] Rrblock = new int[x, x];
             for (int a = 0; a < x; a++)
             {
                 for (int k = 0; k < x; k++)
@@ -92,45 +93,6 @@ namespace Tetris
         {
             return false;
         }
-
-        public void NewBlock()
-        {                      
-            bool[,] grid = tetrisGrid.grid;
-            int x = tetrisblock.GetLength(0);
-            for (int a = 0; a < x; a++)
-            {
-                for (int k = 0; k < x; k++)
-                {
-                    if (tetrisblock[a, k] == true)
-                    {
-                        grid[a,k] = tetrisblock[a, k];                       
-                    }
-                }
-            }
-            GetRandomBlock(); 
-        }
-
-            public static TetrisBlock GetRandomBlock()
-            {
-                int random = randomblocks.Next(1, 8);
-                switch (random)
-                {
-                    case 1:
-                        return new BlockI();
-                    case 2:
-                        return new BlockJ();
-                    case 3:
-                        return new BlockL();
-                    case 4:
-                        return new BlockO();
-                    case 5:
-                        return new BlockS();
-                    case 6:
-                        return new BlockT();
-                    default:
-                        return new BlockZ();
-                }
-            }
 
             public void Reset()
             {

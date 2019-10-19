@@ -44,7 +44,7 @@ class GameWorld
     public double counter = 0;
 
     public TetrisBlock tetrisblock;
-    static readonly Random randomblocks = new Random();
+    static Random randomblocks = new Random();
     public GameWorld()
     {
         random = new Random();
@@ -110,6 +110,8 @@ class GameWorld
         grid.Draw(gameTime, spriteBatch, tetrisblock);
         tetrisblock.Draw(gameTime, spriteBatch);
         spriteBatch.DrawString(font, "", Vector2.Zero, Color.Blue);
+        if(gameState == GameState.GameOver)
+            spriteBatch.DrawString(font, "GAME OVER", new Vector2(300, 500), Color.Blue);
         spriteBatch.End();
     }
 
@@ -142,13 +144,13 @@ class GameWorld
         {
             for (int k = 0; k < x; k++)
             {
-                if (tetrisblock.tetrisblock[a, k] == true)
+                if (tetrisblock.tetrisblock[a, k] != 0)
                 {
                     int gridX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
                     int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
                     int blockX = tetrisblock.blockposition.X + a * tetrisblock.emptyCell.Width;
                     int blockY = tetrisblock.blockposition.Y + k * tetrisblock.emptyCell.Height;
-                    if (blockX < 0 || blockX > tetrisblock.emptyCell.Width * 11 || blockY < 0 || blockY > tetrisblock.emptyCell.Height * 18 || grid.grid[gridX, gridY + 1] == true)
+                    if (blockX < 0 || blockX > tetrisblock.emptyCell.Width * 11 || blockY < 0 || blockY > tetrisblock.emptyCell.Height * 18 || grid.grid[gridX, gridY + 1] != 0)
                         collision = true;
                 }
             }
@@ -157,6 +159,28 @@ class GameWorld
         return collision;
     }
 
+    public bool GameOver()
+    {
+        bool collision = false;
+        int x = tetrisblock.tetrisblock.GetLength(0);
+        for (int a = 0; a < x; a++)
+        {
+            for (int k = 0; k < x; k++)
+            {
+                if (tetrisblock.tetrisblock[a, k] != 0)
+                {
+                    int gridX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
+                    int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
+                    int blockX = tetrisblock.blockposition.X + a * tetrisblock.emptyCell.Width;
+                    int blockY = tetrisblock.blockposition.Y + k * tetrisblock.emptyCell.Height;
+                    if (blockX < 0 || blockX > tetrisblock.emptyCell.Width * 11 || blockY < 0 || blockY > tetrisblock.emptyCell.Height * 18 || grid.grid[gridX, gridY + 1] != 0)
+                        collision = true;
+                }
+            }
+
+        }
+        return collision;
+    }
     public void Merge()
     {
         int x = tetrisblock.tetrisblock.GetLength(1);
@@ -164,7 +188,7 @@ class GameWorld
         {
             for (int k = 0; k < x; k++)
             {
-                if (tetrisblock.tetrisblock[a, k] == true)
+                if (tetrisblock.tetrisblock[a, k] != 0)
                 {
                         int blockX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
                         int blockY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;

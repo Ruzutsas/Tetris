@@ -50,12 +50,35 @@ class TetrisGrid
         {
             for (int u = 0; u < 20; u++)
             {
-                if (grid[i, u] == 0)
+                position = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
+
+                switch (grid[i, u])
                 {
-                    position = new Vector2(i * emptyCell.Width, u * emptyCell.Height);
-                    spriteBatch.Draw(emptyCell, position, Color.White);
+                    case 0:
+                        spriteBatch.Draw(emptyCell, position, Color.White);
+                        break;
+                    case 1:
+                        spriteBatch.Draw(emptyCell, position, Color.LightSkyBlue);
+                        break;
+                    case 2:
+                        spriteBatch.Draw(emptyCell, position, Color.Orange);
+                        break;
+                    case 3:
+                        spriteBatch.Draw(emptyCell, position, Color.Blue);
+                        break;
+                    case 4:
+                        spriteBatch.Draw(emptyCell, position, Color.Yellow);
+                        break;
+                    case 5:
+                        spriteBatch.Draw(emptyCell, position, Color.LimeGreen);
+                        break;
+                    case 6:
+                        spriteBatch.Draw(emptyCell, position, Color.Magenta);
+                        break;
+                    case 7:
+                        spriteBatch.Draw(emptyCell, position, Color.Red);
+                        break;
                 }
-                
             }
         }
 

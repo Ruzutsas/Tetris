@@ -12,10 +12,10 @@ namespace Tetris
     {
         public BlockS()
         {
-            tetrisblock = new bool[3, 3] 
-          { {true,false,false},
-            {true,true,false},
-            {false,true,false}};
+            tetrisblock = new int[3, 3] 
+          { {5,0,0},
+            {5,5,0},
+            {0,5,0}};
             color = Color.LimeGreen;               //Kleur van BlockS
         }
     }
