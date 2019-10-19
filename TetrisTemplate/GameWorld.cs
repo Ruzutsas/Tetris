@@ -40,9 +40,9 @@ class GameWorld
     /// <summary>
     /// The main grid of the game.
     /// </summary>
-    TetrisGrid grid;
+    public TetrisGrid grid;
     public double counter = 0;
-    public TetrisBlock tetrisblock;
+    public TetrisBlock tetrisblock;   
     static readonly Random randomblocks = new Random();
     public GameWorld()
     {
@@ -50,7 +50,7 @@ class GameWorld
         gameState = GameState.Playing;
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
         tetrisblock = GetRandomBlock();
-        grid = new TetrisGrid();
+        grid = new TetrisGrid();       
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
@@ -94,10 +94,7 @@ class GameWorld
             if (Collision())
                 tetrisblock.RotateL();
         }
-
-
     }
-
 
     public void Update(GameTime gameTime)
     {
@@ -125,7 +122,7 @@ class GameWorld
     }
 
     public static TetrisBlock GetRandomBlock()
-    {
+    {            
         int random = randomblocks.Next(1, 8);
         switch (random)
         {
@@ -143,7 +140,7 @@ class GameWorld
                 return new BlockT();
             default:
                 return new BlockZ();
-        }
+        }       
     }
     public bool Collision()
     {
@@ -156,10 +153,10 @@ class GameWorld
                 if (tetrisblock.tetrisblock[a, k] != 0)
                 {
                     int gridX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
-                    int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
+                    int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k + 1;
                     int blockX = tetrisblock.blockposition.X + a * tetrisblock.emptyCell.Width;
                     int blockY = tetrisblock.blockposition.Y + k * tetrisblock.emptyCell.Height;
-                    if (blockX < 0 || blockX > tetrisblock.emptyCell.Width * 11 || blockY < 0 || blockY >= tetrisblock.emptyCell.Height * 19 || grid.grid[gridX, gridY + 1] != 0)
+                    if (blockX < 0 || blockX > tetrisblock.emptyCell.Width * 11 || blockY < 0 || blockY >= tetrisblock.emptyCell.Height * 19 || grid.grid[gridX, gridY] != 0)
                         collision = true;
                 }
             }
@@ -191,8 +188,8 @@ class GameWorld
         }
         if (GameOver())
             gameState = GameState.GameOver;
-
         tetrisblock = GetRandomBlock();
+        grid.DetectFullLine();
     }
 
 

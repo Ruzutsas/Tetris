@@ -43,7 +43,7 @@ class TetrisGame : Game
         graphics.PreferredBackBufferWidth = ScreenSize.X;
         graphics.PreferredBackBufferHeight = ScreenSize.Y;
         MediaPlayer.IsRepeating = true;
-        MediaPlayer.Play(Content.Load<Song>("TetrisMusic"));
+        //MediaPlayer.Play(Content.Load<Song>("TetrisMusic"));
         // create the input helper object
         inputHelper = new InputHelper();
     }
@@ -58,6 +58,7 @@ class TetrisGame : Game
 
     protected override void Update(GameTime gameTime)
     {
+        Console.WriteLine("55");
         inputHelper.Update(gameTime);
         gameWorld.HandleInput(gameTime, inputHelper);
         gameWorld.Update(gameTime);

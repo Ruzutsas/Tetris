@@ -44,6 +44,7 @@ class TetrisGrid
     /// <param name="spriteBatch">The SpriteBatch used for drawing sprites and text.</param>
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch, TetrisBlock tetrisBlock)
     {
+        Console.WriteLine("10");
         for (int i = 0; i < 12; i++)
         {
             for (int u = 0; u < 20; u++)
@@ -83,53 +84,42 @@ class TetrisGrid
 
     public void DetectFullLine()
     {
-        for (int x = 0; x < 12; x++)
-        {
-            for (int y = 0; y < 20; y++)
-            {
-            Vector2 Lineposition = new Vector2(x * emptyCell.Width, y * emptyCell.Height);
-                for (int u = 20; u != 0; u-- )
+        System.Diagnostics.Debug.WriteLine("1");
+        int amountfullrows = 0;
+        int ylowestrow = 0;
+        for (int y = 19; y > 1; y--)
+        {           
+            bool fullrow = true;
+            for (int x = 0; x < 11; x++)
+            {              
+                if (grid[x, y] == 0)                        //Checkt of er een leeg blokje is in de row
                 {
-                    bool fullrow = true;
-                    for (int i = 0; i != Lineposition.X; i++)
-                    {
-                        if (grid[i, u] == 0)
-                            fullrow = false;
-                        Lineposition.X += emptyCell.Width;
-                    }
-                    if (fullrow)
-                    {
-                       ClearLine(u);
-                       u++;
-                    }
-                    Lineposition.X = 0;
-                    Lineposition.Y += emptyCell.Height;
-                }                                                     
-            }
+                    fullrow = false;                    
+                }                
+            } 
+            if (fullrow)
+            {
+                System.Diagnostics.Debug.WriteLine("7");
+                if (ylowestrow == 0)
+                {
+                    ylowestrow = y;
+                    System.Diagnostics.Debug.WriteLine("3");
+                }
+                amountfullrows++;
+            }                                                                   
         }
-    }
-
-    protected void ClearLine(int j)
-    {
-        for (int x = 0; x < 12; x++)
+        if (amountfullrows > 0)
         {
-            for (int y = 0; y < 20; y++)
-            {
-                Vector2 Lineposition = new Vector2(x * emptyCell.Width, y * emptyCell.Height);
-                for (int u = j; u != 0; u--)
+            System.Diagnostics.Debug.WriteLine("4");           
+            for (int y = ylowestrow; y > 1; y--)
+            {           
+                for (int x = 0; x < 11; x++)
                 {
-                    for (int i = 0; i != Lineposition.X; i++)
-                    {
-                        grid[i, u] = grid[i, u - 1];
-                        grid[i, u - 1] = 0;
-                        Lineposition.X += emptyCell.Width;
-                    }
-                    Lineposition.X = 0;
-                    Lineposition.Y += emptyCell.Height;
+                    grid[x, y] = grid[x, y - amountfullrows];                    
                 }
             }
-        }    
-    }
+        }
+    } 
       
     /// <summary>
     /// Clears the grid.
