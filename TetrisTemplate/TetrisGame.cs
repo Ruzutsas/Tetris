@@ -59,7 +59,6 @@ class TetrisGame : Game
 
     protected override void Update(GameTime gameTime)
     {
-        Console.WriteLine("55");
         inputHelper.Update(gameTime);
         gameWorld.HandleInput(gameTime, inputHelper);
         gameWorld.Update(gameTime);

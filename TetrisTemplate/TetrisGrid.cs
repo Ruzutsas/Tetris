@@ -44,7 +44,6 @@ class TetrisGrid
     /// <param name="spriteBatch">The SpriteBatch used for drawing sprites and text.</param>
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch, TetrisBlock tetrisBlock)
     {
-        Console.WriteLine("10");
         for (int i = 0; i < 12; i++)
         {
             for (int u = 0; u < 20; u++)
@@ -84,7 +83,6 @@ class TetrisGrid
 
     public void DetectFullLine()
     {
-        System.Diagnostics.Debug.WriteLine("1");
         int amountfullrows = 0;
         int ylowestrow = 0;
         for (int y = 19; y > 1; y--)
@@ -99,18 +97,15 @@ class TetrisGrid
             } 
             if (fullrow)
             {
-                System.Diagnostics.Debug.WriteLine("7");
                 if (ylowestrow == 0)
                 {
                     ylowestrow = y;
-                    System.Diagnostics.Debug.WriteLine("3");
                 }
                 amountfullrows++;
             }                                                                   
         }
         if (amountfullrows > 0)
-        {
-            System.Diagnostics.Debug.WriteLine("4");           
+        {          
             for (int y = ylowestrow; y > 1; y--)
             {           
                 for (int x = 0; x < 11; x++)
