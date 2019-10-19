@@ -67,13 +67,7 @@ class GameWorld
             if (Collision())
                 counter--;
         }
-         if (inputHelper.KeyPressed(Keys.Right))                     //Beweegt de tetromino naar rechts
-            {
-                 counter++;
-                if (Collision())
-                    counter--;
-            }
-       else if (inputHelper.KeyPressed(Keys.Right))
+       else if (inputHelper.KeyPressed(Keys.Right)) //Beweegt de tetromino naar rechts
         {
             tetrisblock.blockposition.X += tetrisblock.emptyCell.Width;
             if (Collision())
@@ -101,21 +95,6 @@ class GameWorld
 
     }
 
-    public void Update(GameTime gameTime)
-    {
-            if (Collision())
-            {
-                RotateL();
-                if (Collision())
-                    RotateR();
-            }
-            else if (inputHelper.KeyPressed(Keys.D))                    //Roteert de tetromino rechtsom
-            {
-                RotateR();
-                if (Collision())
-                    RotateL();
-            }
-    }
 
     public void Update(GameTime gameTime)
     {
@@ -181,14 +160,15 @@ class GameWorld
                         collision = true;
                 }
             }
-
         }
+        if (GameOver())
+            gameState = GameState.GameOver;
         return collision;
     }
 
     public bool GameOver()
     {
-        bool collision = false;
+        bool gameover = false;
         int x = tetrisblock.tetrisblock.GetLength(0);
         for (int a = 0; a < x; a++)
         {
@@ -198,15 +178,14 @@ class GameWorld
                 {
                     int gridX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
                     int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
-                    int blockX = tetrisblock.blockposition.X + a * tetrisblock.emptyCell.Width;
                     int blockY = tetrisblock.blockposition.Y + k * tetrisblock.emptyCell.Height;
-                    if (blockX < 0 || blockX > tetrisblock.emptyCell.Width * 11 || blockY < 0 || blockY > tetrisblock.emptyCell.Height * 18 || grid.grid[gridX, gridY + 1] != 0)
-                        collision = true;
+                    if (blockY < 0 && grid.grid[gridX, gridY + 1] != 0)
+                        gameover = true;
                 }
             }
 
         }
-        return collision;
+        return gameover;
     }
     public void Merge()
     {
@@ -217,37 +196,18 @@ class GameWorld
             {
                 if (tetrisblock.tetrisblock[a, k] != 0)
                 {
-                    int blockX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
-                    int blockY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
-                    grid.grid[blockX,blockY] = tetrisblock.tetrisblock[a, k];
+                    int gridX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
+                    int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
+                    grid.grid[gridX,gridY] = tetrisblock.tetrisblock[a, k];
                 }
             }
         }
+        if (GameOver())
+            gameState = GameState.GameOver;
+
         tetrisblock =  GetRandomBlock();
     }  
 
-     public bool Collision()
-     {
-        bool collision = false;
-        bool[,] grid = tetrisGrid.grid;
-        int x = tetrisblock.GetLength(0);
-        for (int a = 0; a < x; a++)
-        {
-            for (int k = 0; k < x; k++)
-            {
-                if (tetrisblock[a, k] == true)
-                {
-                    int blockX = tetrisblock.blockposition.X + a * tetrisblock.emptyCell.Width;
-                    int blockY = tetrisblock.blockposition.Y + k * tetrisblock.emptyCell.Height;
-                    if (blockX < 0 || blockX > emptyCell.Width * 11 || blockY < 0 || blockY > emptyCell.Height * 18 || grid[a, k] == true)
-                    {
-                        collision = true;                              
-                    }                    
-                }
-            }
-        }
-        return collision;
-     }
 
     public void Reset()
     {

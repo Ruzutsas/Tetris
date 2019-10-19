@@ -12,6 +12,7 @@ namespace Tetris
 {
     class TetrisBlock 
     {
+        GameWorld gameWorld;
         static Random randomblocks = new Random();
         TetrisGrid tetrisGrid;
         public Texture2D emptyCell;
@@ -31,12 +32,6 @@ namespace Tetris
             Clear();
         }
 
-        public void HandleInput(GameTime gameTime, InputHelper inputHelper)
-        {
-        }
-        public void Update(GameTime gameTime)
-        {
-        }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -87,10 +82,6 @@ namespace Tetris
         {
         }
 
-        public virtual bool CheckBlock()
-        {
-            return false;
-        }
 
         public void Reset()
         {
