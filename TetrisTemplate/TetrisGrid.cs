@@ -96,8 +96,7 @@ class TetrisGrid
                 }
                 amountfullrows++;
             }                                                                   
-        }
-        System.Diagnostics.Debug.WriteLine("4" + previoustetris);
+        }       
         if (amountfullrows > 0)                            
         {          
             for (int y = ylowestrow; y > 1 + amountfullrows; y--)
@@ -106,8 +105,7 @@ class TetrisGrid
                 {
                     grid[x, y] = grid[x, y - amountfullrows];     //Als er een volle row is schuift de row erboven over de volle row.                  
                 }             
-            }  
-            System.Diagnostics.Debug.WriteLine("1" + previoustetris);
+            }             
             switch (amountfullrows)
             {                      
                 case 1:
@@ -130,8 +128,7 @@ class TetrisGrid
                     }  
                     previoustetris = true;                      //Als er deze beurt een Tetris gemaakt wordt kan er in de volgende beurten een Back-to-Back Tetris gemaakt worden.
                     break;
-            }
-            System.Diagnostics.Debug.WriteLine("2" + previoustetris);                
+            }               
         }
     } 
       

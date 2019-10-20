@@ -186,7 +186,7 @@ class GameWorld
     {
         bool collision = false;
         int tetrisShapeLength = tetrisblock.tetrisblock.GetLength(0);
-            for (int x = 0; x < tetrisShapeLength; x++)
+        for (int x = 0; x < tetrisShapeLength; x++)
         {
             for (int y = 0; y < tetrisShapeLength; y++)
             {
@@ -243,7 +243,7 @@ class GameWorld
         NextLevelthreshold += Score;
         if (NextLevelthreshold >= 200)
         {            
-            levelspeed += 0.0;
+            levelspeed += 0.2;
             NextLevelthreshold = 0;
         }
     }
