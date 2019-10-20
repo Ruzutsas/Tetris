@@ -184,7 +184,7 @@ class GameWorld
     {
         bool collision = false;
         int tetrisShapeLength = tetrisblock.tetrisblock.GetLength(0);
-            for (int x = 0; x < tetrisShapeLength; x++)
+        for (int x = 0; x < tetrisShapeLength; x++)
         {
             for (int y = 0; y < tetrisShapeLength; y++)
             {
