@@ -132,12 +132,9 @@ class GameWorld
                     {
                         gameState = GameState.Menu;
                     }
-
                 }
                 break;
         }
-
-
     }
 
     public void Update(GameTime gameTime)
