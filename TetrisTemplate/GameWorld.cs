@@ -178,7 +178,6 @@ class GameWorld
 
         }
         nextTetrisBlock.blockposition = new Point(14 * blocksize, blocksize);
-
     }
 
     public bool Collision()
@@ -244,8 +243,8 @@ class GameWorld
         int NextLevelthreshold = 0;
         NextLevelthreshold += Score;
         if (NextLevelthreshold >= 200)
-        {
-            levelspeed += 0.3;
+        {            
+            levelspeed += 0.0;
             NextLevelthreshold = 0;
         }
     }
