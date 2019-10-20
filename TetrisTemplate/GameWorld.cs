@@ -24,8 +24,9 @@ class GameWorld
     /// <summary>
     /// The random-number generator of the game.
     /// </summary>
-    public static Random Random { get { return random; } }
     static Random random;
+
+    public static Random Random { get { return random; } }
 
     /// <summary>
     /// The main font of the game.
@@ -39,14 +40,15 @@ class GameWorld
     /// <summary>
     /// The main grid of the game.
     /// </summary>
-   
-    int blocksize = 30;
+
+    const int blocksize = 30;
     TetrisGrid grid;
-    public double counter = 0;    
-    public TetrisBlock tetrisblock;
+    public double counter = 0;
+    public TetrisBlock tetrisblock, nextTetrisBlock;
     readonly Random randomblocks = new Random();
     double levelspeed = 1;
-    public int score = 0;   
+    public int score = 0;
+
 
     public int Score
     {
@@ -59,8 +61,6 @@ class GameWorld
         random = new Random();
         gameState = GameState.Playing;
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
-        tetrisblock = GetRandomBlock();
-        grid = new TetrisGrid();           
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
@@ -80,15 +80,13 @@ class GameWorld
         }
         else if (inputHelper.KeyPressed(Keys.Right)) //Beweegt de tetromino naar rechts
         {
-            tetrisblock.blockposition.X += blocksize;
-            if (Collision()) 
-                tetrisblock.blockposition.X -= blocksize;
+            if (!Collision())
+                tetrisblock.blockposition.X += blocksize;
         }
         else if (inputHelper.KeyPressed(Keys.Left))
         {
-            tetrisblock.blockposition.X -= blocksize;
-            if (Collision())
-                tetrisblock.blockposition.X += blocksize;
+            if (!Collision())
+                tetrisblock.blockposition.X -= blocksize;
         }
         else if (inputHelper.KeyPressed(Keys.A))
         {
@@ -123,7 +121,7 @@ class GameWorld
         }
         else
         {
-            counter += gameTime.ElapsedGameTime.TotalSeconds * levelspeed;         
+            counter += gameTime.ElapsedGameTime.TotalSeconds * levelspeed;
             tetrisblock.blockposition.Y = ((int)counter * blocksize);
         }
     }
@@ -135,7 +133,8 @@ class GameWorld
         {
             grid.Draw(gameTime, spriteBatch);
             tetrisblock.Draw(gameTime, spriteBatch);
-            spriteBatch.DrawString(font, "Score: " + Score , new Vector2(TetrisGame.ScreenSize.X / 2, 0), Color.Black);
+            nextTetrisBlock.Draw(gameTime, spriteBatch);
+            spriteBatch.DrawString(font, "Score: " + Score, new Vector2(TetrisGame.ScreenSize.X / 2, 0), Color.Black);
         }
         else if (gameState == GameState.GameOver)
         {
@@ -145,44 +144,61 @@ class GameWorld
         spriteBatch.End();
     }
 
-    public TetrisBlock GetRandomBlock()
+    public void GenerateRandomBlock()
     {
         int random = randomblocks.Next(1, 8);
         switch (random)
         {
             case 1:
-                return new BlockI();
+                nextTetrisBlock = new BlockI();
+                break;
             case 2:
-                return new BlockJ();
+                nextTetrisBlock = new BlockJ();
+                break;
+
             case 3:
-                return new BlockL();
+                nextTetrisBlock = new BlockL();
+                break;
+
             case 4:
-                return new BlockO();
+                nextTetrisBlock = new BlockO();
+                break;
+
             case 5:
-                return new BlockS();
+                nextTetrisBlock = new BlockS();
+                break;
+
             case 6:
-                return new BlockT();
+                nextTetrisBlock = new BlockT();
+                break;
+
             default:
-                return new BlockZ();
-        }         
+                nextTetrisBlock = new BlockZ();
+                break;
+
+        }
+        nextTetrisBlock.blockposition = new Point(14 * blocksize, blocksize);
     }
 
     public bool Collision()
     {
         bool collision = false;
-        int x = tetrisblock.tetrisblock.GetLength(0);
-        for (int a = 0; a < x; a++)
+        int tetrisShapeLength = tetrisblock.tetrisblock.GetLength(0);
+            for (int x = 0; x < tetrisShapeLength; x++)
         {
-            for (int k = 0; k < x; k++)
-            {                    
-                int gridX = tetrisblock.blockposition.X / blocksize + a;
-                int gridY = tetrisblock.blockposition.Y / blocksize + k;
-                int blockX = tetrisblock.blockposition.X + a * blocksize;
-                int blockY = tetrisblock.blockposition.Y + k * blocksize;
-                if (tetrisblock.tetrisblock[a, k] != 0)
+            for (int y = 0; y < tetrisShapeLength; y++)
+            {
+                int gridX = tetrisblock.blockposition.X / blocksize + x;
+                int gridY = tetrisblock.blockposition.Y / blocksize + y;
+                int blockX = tetrisblock.blockposition.X + x * blocksize;
+                int blockY = tetrisblock.blockposition.Y + y * blocksize;
+                if (tetrisblock.tetrisblock[x, y] != 0)
                 {
-                    if (blockX < 0 || blockX > blocksize * 11 || blockY < 0 || blockY >= blocksize * 19 || grid.grid[gridX , gridY + 1] != 0)
+                    if (blockX < 0 || blockX > blocksize * 11 || blockY < 0 || blockY >= blocksize * 19)
                         collision = true;
+                    if (grid.grid[gridX, gridY + 1] != 0 || grid.grid[gridX + 1, gridY] != 0 || grid.grid[gridX - 1, gridY] != 0)
+                        collision = true;
+
                 }
             }
         }
@@ -213,10 +229,13 @@ class GameWorld
             }
         }
         if (GameOver())
-            gameState = GameState.GameOver;               
-        tetrisblock = GetRandomBlock();            
+            gameState = GameState.GameOver;
+        tetrisblock = nextTetrisBlock;
+        tetrisblock.blockposition = new Point(4 * blocksize, 0);
+        TetrisGrid.previoustetris = false;
         grid.DetectFullLine();
         NextLevel();
+        GenerateRandomBlock();
     }
 
     public void NextLevel() //Verhoogt de valsnelheid van de blokken als er een bepaald aantal punten is behaald.
@@ -231,13 +250,11 @@ class GameWorld
     }
     public void Reset()
     {
-        for (int i = 0; i < 12; i++)        //Clear Grid
-        {
-            for (int u = 0; u < 20; u++)
-            {
-                grid.grid[i, u] = 0;
-            }
-        }
+        GenerateRandomBlock();
+        tetrisblock = nextTetrisBlock;
+        tetrisblock.blockposition = new Point(4 * blocksize, 0);
+        grid = new TetrisGrid();
+        GenerateRandomBlock();
         score = 0;
         levelspeed = 1;
     }
