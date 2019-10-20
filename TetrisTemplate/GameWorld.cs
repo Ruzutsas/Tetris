@@ -225,7 +225,7 @@ class GameWorld
         NextLevelthreshold += Score;
         if (NextLevelthreshold >= 200)
         {            
-            levelspeed += 0.0;
+            levelspeed += 0.2;
             NextLevelthreshold = 0;
         }
     }
