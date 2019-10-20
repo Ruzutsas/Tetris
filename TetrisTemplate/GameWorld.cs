@@ -133,11 +133,13 @@ class GameWorld
                 {
                     if (inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.Enter))
                         gameState = GameState.Playing;
+                    else if (inputHelper.KeyPressed(Keys.Escape))
+                    {
+                        gameState = GameState.Menu;
+                    }
                 }
                 break;
         }
-
-
     }
 
     public void Update(GameTime gameTime)
@@ -152,7 +154,7 @@ class GameWorld
 
             else
             {
-                counter += gameTime.ElapsedGameTime.TotalSeconds * levelspeed;
+                counter = counter * levelspeed + gameTime.ElapsedGameTime.TotalSeconds;
                 tetrisblock.blockposition.Y = ((int)counter * blocksize);
             }
         }
