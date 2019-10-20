@@ -131,7 +131,8 @@ class TetrisGrid
                     }  
                     previoustetris = true;                      //Als er deze beurt een Tetris gemaakt wordt kan er in de volgende beurten een Back-to-Back Tetris gemaakt worden.
                     break;
-            }               
+            }
+            GameWorld.clearrow.Play(0.2f, 0, 0);
         }
     } 
 
