@@ -25,7 +25,7 @@ class TetrisGrid
 
     /// The number of grid elements in the y-direction.
     public int Height { get { return 20; } }
-
+    public static bool previoustetris;
     /// <summary>
     /// Creates a new TetrisGrid.
     /// </summary>
@@ -44,7 +44,6 @@ class TetrisGrid
     /// <param name="spriteBatch">The SpriteBatch used for drawing sprites and text.</param>
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        Console.WriteLine("10");
         for (int i = 0; i < 12; i++)
         {
             for (int u = 0; u < 20; u++)
@@ -84,13 +83,12 @@ class TetrisGrid
 
     public void DetectFullLine()
     {
-        System.Diagnostics.Debug.WriteLine("1");
         int amountfullrows = 0;
         int ylowestrow = 0;
         for (int y = 19; y > 1; y--)
         {           
             bool fullrow = true;
-            for (int x = 0; x < 11; x++)
+            for (int x = 0; x < 12; x++)
             {              
                 if (grid[x, y] == 0)                        //Checkt of er een leeg blokje is in de row
                 {
@@ -99,25 +97,46 @@ class TetrisGrid
             } 
             if (fullrow)
             {
-                System.Diagnostics.Debug.WriteLine("7");
                 if (ylowestrow == 0)
                 {
                     ylowestrow = y;
-                    System.Diagnostics.Debug.WriteLine("3");
                 }
                 amountfullrows++;
             }                                                                   
         }
-        if (amountfullrows > 0)
-        {
-            System.Diagnostics.Debug.WriteLine("4");           
+        if (amountfullrows > 0)                             //Als er een volle row schuift de row erboven over de volle row.
+        {          
             for (int y = ylowestrow; y > 1; y--)
             {           
-                for (int x = 0; x < 11; x++)
+                for (int x = 0; x < 12; x++)
                 {
-                    grid[x, y] = grid[x, y - amountfullrows];                    
-                }
+                    grid[x, y] = grid[x, y - amountfullrows];                      
+                }             
+            }                                  
+            switch (amountfullrows)
+            {               
+                case 1:
+                    TetrisGame.gameWorld.Score += 100;  //Verhoogt de score met 100 punten.
+                    previoustetris = false;
+                    break;                
+                case 2:
+                    TetrisGame.gameWorld.Score += 200;
+                    previoustetris = false;
+                    break;
+                case 3:
+                    TetrisGame.gameWorld.Score += 300;
+                    previoustetris = false;
+                    break;
+                case 4:
+                    TetrisGame.gameWorld.Score += 800;
+                    if (previoustetris)
+                    {
+                        TetrisGame.gameWorld.Score += 400;      //Back-to-Back Tetris is 1200 points waard.
+                    }  
+                    previoustetris = true;              //Als er deze beurt een Tetris wordt gemaakt kan er volgende beurt een Back-to-Back Tetris gemaakt worden.
+                    break;
             }
+                             
         }
     } 
       

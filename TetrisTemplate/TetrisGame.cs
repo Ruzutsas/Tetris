@@ -8,7 +8,7 @@ class TetrisGame : Game
 {
     SpriteBatch spriteBatch;
     InputHelper inputHelper;
-    GameWorld gameWorld;
+    public static GameWorld gameWorld;
     /// <summary>
     /// A static reference to the ContentManager object, used for loading assets.
     /// </summary>
@@ -60,7 +60,6 @@ class TetrisGame : Game
 
     protected override void Update(GameTime gameTime)
     {
-        Console.WriteLine("55");
         inputHelper.Update(gameTime);
         gameWorld.HandleInput(gameTime, inputHelper);
         gameWorld.Update(gameTime);
