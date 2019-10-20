@@ -56,6 +56,7 @@ class GameWorld
         set { score = value; }
     }
 
+
     public GameWorld()
     {
         random = new Random();
@@ -133,10 +134,14 @@ class GameWorld
         spriteBatch.Begin();
         if (gameState == GameState.Playing)
         {
+            int level = Score / 100 + 1;
             grid.Draw(gameTime, spriteBatch);
             tetrisblock.Draw(gameTime, spriteBatch);
             nextTetrisBlock.Draw(gameTime, spriteBatch);
             spriteBatch.DrawString(font, "Score: " + Score, new Vector2(TetrisGame.ScreenSize.X / 2, 0), Color.Black);
+            spriteBatch.DrawString(font, "Level: " + level, new Vector2(TetrisGame.ScreenSize.X-(TetrisGame.ScreenSize.X / 3), 0), Color.Black);
+
+
         }
         else if (gameState == GameState.GameOver)
         {
