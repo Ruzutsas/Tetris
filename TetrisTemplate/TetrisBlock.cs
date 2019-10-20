@@ -76,11 +76,6 @@ namespace Tetris
         {
         }
 
-
-        public void Reset()
-        {
-
-        }
     }
 }
 
