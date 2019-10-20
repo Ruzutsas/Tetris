@@ -42,9 +42,7 @@ class TetrisGame : Game
         graphics.PreferredBackBufferWidth = ScreenSize.X;
         graphics.PreferredBackBufferHeight = ScreenSize.Y;
 
-        MediaPlayer.IsRepeating = true;
-        MediaPlayer.Play(Content.Load<Song>("TetrisMusic"));
-        MediaPlayer.Volume -= 0.90f;
+        
         // create the input helper object
         inputHelper = new InputHelper();
     }
@@ -53,7 +51,10 @@ class TetrisGame : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
         // create and reset the game world
-        gameWorld = new GameWorld();
+        gameWorld = new GameWorld(ContentManager);
+        MediaPlayer.IsRepeating = true;
+        MediaPlayer.Play(Content.Load<Song>("TetrisMusic"));
+        MediaPlayer.Volume -= 0.90f;
         gameWorld.Reset();
     }
 

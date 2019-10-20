@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using System;
 using Tetris;
 
@@ -46,9 +47,10 @@ class GameWorld
     public double counter = 0;
     public TetrisBlock tetrisblock, nextTetrisBlock;
     readonly Random randomblocks = new Random();
+    public static SoundEffect clearrow;
+    protected static SoundEffect fall;
     double levelspeed = 1;
     public int score = 0;
-
 
     public int Score
     {
@@ -56,12 +58,16 @@ class GameWorld
         set { score = value; }
     }
 
-    public GameWorld()
+    public GameWorld(ContentManager Content)
     {
         random = new Random();
         gameState = GameState.Playing;
+        clearrow = Content.Load<SoundEffect>("clear");       
+        fall = Content.Load<SoundEffect>("fall");
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
     }
+
+
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
@@ -230,8 +236,8 @@ class GameWorld
         if (GameOver())
             gameState = GameState.GameOver;
         tetrisblock = nextTetrisBlock;
-        tetrisblock.blockposition = new Point(4 * blocksize, 0);
-        TetrisGrid.previoustetris = false;
+        tetrisblock.blockposition = new Point(4 * blocksize, 0);      
+        fall.Play(0.2f, 0, 0);
         grid.DetectFullLine();
         NextLevel();
         GenerateRandomBlock();

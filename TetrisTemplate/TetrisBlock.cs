@@ -1,16 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Audio;
 
 
 namespace Tetris
-{
+{  
     class TetrisBlock 
     {
         public Texture2D emptyCell;
         public int[,] tetrisblock;
         public Point blockposition;
         public Color color;
-        private int blocksize = 30;
+        private int blocksize = 30;      
 
         public Color Blockcolor
         {

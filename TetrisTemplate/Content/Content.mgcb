@@ -25,6 +25,24 @@
 /processorParam:TextureFormat=Color
 /build:block.png
 
+#begin clear.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:clear.wav
+
+#begin clear.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:clear.wav
+
+#begin fall.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:fall.wav
+
 #begin SpelFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
