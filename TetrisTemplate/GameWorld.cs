@@ -60,72 +60,100 @@ class GameWorld
     public GameWorld()
     {
         random = new Random();
-        gameState = GameState.Playing;
+        gameState = GameState.Menu;
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
-        if (inputHelper.KeyPressed(Keys.Down))
+
+        switch (gameState)
         {
-            counter++;
-            if (Collision())
-                counter--;
+            case GameState.Menu:
+                if (inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.Enter))
+                    gameState = GameState.Playing;
+                break;
+
+            case GameState.Playing:
+                if (inputHelper.KeyPressed(Keys.Down))
+                {
+                    counter++;
+                    if (Collision())
+                        counter--;
+                }
+                else if (inputHelper.KeyPressed(Keys.Space) && counter > 1)
+                {
+                    while (!Collision())
+                    {
+                        tetrisblock.blockposition.Y++;
+                    }
+                }
+                else if (inputHelper.KeyPressed(Keys.Right)) //Beweegt de tetromino naar rechts
+                {
+                    tetrisblock.blockposition.X += blocksize;
+                    if (Collision())
+                        tetrisblock.blockposition.X -= blocksize;
+                }
+                else if (inputHelper.KeyPressed(Keys.Left))
+                {
+                    tetrisblock.blockposition.X -= blocksize;
+                    if (Collision())
+                        tetrisblock.blockposition.X += blocksize;
+                }
+                else if (inputHelper.KeyPressed(Keys.A))
+                {
+                    tetrisblock.RotateL();
+                    if (Collision())
+                        tetrisblock.RotateR();
+                }
+                else if (inputHelper.KeyPressed(Keys.D))
+                {
+                    tetrisblock.RotateR();
+                    if (Collision())
+                        tetrisblock.RotateL();
+                }
+                else if (inputHelper.KeyPressed(Keys.Escape))
+                {
+                    gameState = GameState.Menu;
+                }
+                break;
+
+            case GameState.GameOver:
+                {
+                    if (inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.Enter))
+                        gameState = GameState.Playing;
+
+                    else if (inputHelper.KeyPressed(Keys.Escape))
+                    {
+                        gameState = GameState.Menu;
+                    }
+
+                }
+                break;
         }
-        else if (inputHelper.KeyPressed(Keys.Space) && counter > 1)
-        {
-            while (!Collision())
-            {
-                tetrisblock.blockposition.Y++;
-            }
-        }
-        else if (inputHelper.KeyPressed(Keys.Right)) //Beweegt de tetromino naar rechts
-        {
-            tetrisblock.blockposition.X += blocksize;
-            if (Collision())
-                tetrisblock.blockposition.X -= blocksize;
-        }
-        else if (inputHelper.KeyPressed(Keys.Left))
-        {
-            tetrisblock.blockposition.X -= blocksize;
-            if (Collision())
-                tetrisblock.blockposition.X += blocksize;
-        }
-        else if (inputHelper.KeyPressed(Keys.A))
-        {
-            tetrisblock.RotateL();
-            if (Collision())
-                tetrisblock.RotateR();
-        }
-        else if (inputHelper.KeyPressed(Keys.D))
-        {
-            tetrisblock.RotateR();
-            if (Collision())
-                tetrisblock.RotateL();
-        }
-        if (gameState == GameState.GameOver)
-        {
-            if (inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.Enter))
-                gameState = GameState.Playing;
-        }
+
 
     }
 
     public void Update(GameTime gameTime)
     {
-        if (Collision())
+        if (gameState == GameState.Playing)
         {
-            counter = 0;
-            Merge();
+            if (Collision())
+            {
+                counter = 0;
+                Merge();
+            }
+
+            else
+            {
+                counter += gameTime.ElapsedGameTime.TotalSeconds * levelspeed;
+                tetrisblock.blockposition.Y = ((int)counter * blocksize);
+            }
         }
         if (gameState == GameState.GameOver)
         {
             counter = 0;
-        }
-        else
-        {
-            counter += gameTime.ElapsedGameTime.TotalSeconds * levelspeed;
-            tetrisblock.blockposition.Y = ((int)counter * blocksize);
         }
     }
 
@@ -139,9 +167,7 @@ class GameWorld
             tetrisblock.Draw(gameTime, spriteBatch);
             nextTetrisBlock.Draw(gameTime, spriteBatch);
             spriteBatch.DrawString(font, "Score: " + Score, new Vector2(TetrisGame.ScreenSize.X / 2, 0), Color.Black);
-            spriteBatch.DrawString(font, "Level: " + level, new Vector2(TetrisGame.ScreenSize.X-(TetrisGame.ScreenSize.X / 3), 0), Color.Black);
-
-
+            spriteBatch.DrawString(font, "Level: " + level, new Vector2(TetrisGame.ScreenSize.X - (TetrisGame.ScreenSize.X / 3), 0), Color.Black);
         }
         else if (gameState == GameState.GameOver)
         {
@@ -153,7 +179,7 @@ class GameWorld
 
     public void GenerateRandomBlock()
     {
-        int random = randomblocks.Next(1, 8);
+        int random = randomblocks.Next(1, 9);
         switch (random)
         {
             case 1:
@@ -177,6 +203,10 @@ class GameWorld
 
             case 6:
                 nextTetrisBlock = new BlockT();
+                break;
+
+            case 7:
+                nextTetrisBlock = new BlockB();
                 break;
 
             default:
@@ -224,11 +254,44 @@ class GameWorld
         {
             for (int k = 0; k < x; k++)
             {
-                if (tetrisblock.tetrisblock[a, k] != 0)
+                int gridX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
+                int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
+                if (tetrisblock.tetrisblock[a, k] != 0 && tetrisblock.tetrisblock[a, k]!=8)
                 {
-                    int gridX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
-                    int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
                     grid.grid[gridX, gridY] = tetrisblock.tetrisblock[a, k];
+                }
+                if (tetrisblock.tetrisblock[a, k] == 8)
+                {
+                    grid.grid[gridX + 1, gridY + 1] = 0;
+                    grid.grid[gridX + 2, gridY + 2] = 0;
+                    grid.grid[gridX + 2, gridY + 1] = 0;
+                    grid.grid[gridX + 1, gridY + 2] = 0;
+
+                    grid.grid[gridX - 1, gridY - 1] = 0;
+                    grid.grid[gridX - 2, gridY - 2] = 0;
+                    grid.grid[gridX - 2, gridY - 1] = 0;
+                    grid.grid[gridX - 1, gridY - 2] = 0;
+
+                    grid.grid[gridX - 1, gridY + 1] = 0;
+                    grid.grid[gridX - 2, gridY + 2] = 0;
+                    grid.grid[gridX - 2, gridY + 1] = 0;
+                    grid.grid[gridX - 1, gridY + 2] = 0;
+
+                    grid.grid[gridX + 1, gridY - 1] = 0;
+                    grid.grid[gridX + 2, gridY - 2] = 0;
+                    grid.grid[gridX + 2, gridY - 1] = 0;
+                    grid.grid[gridX + 1, gridY - 2] = 0;
+
+                    grid.grid[gridX, gridY - 1] = 0;
+                    grid.grid[gridX, gridY - 2] = 0;
+                    grid.grid[gridX, gridY + 1] = 0;
+                    grid.grid[gridX, gridY + 2] = 0;
+
+                    grid.grid[gridX + 2, gridY] = 0;
+                    grid.grid[gridX + 1, gridY] = 0;
+                    grid.grid[gridX - 2, gridY] = 0;
+                    grid.grid[gridX - 1, gridY] = 0;
+
                 }
             }
         }
@@ -247,7 +310,7 @@ class GameWorld
         int NextLevelthreshold = 0;
         NextLevelthreshold += Score;
         if (NextLevelthreshold >= 200)
-        {            
+        {
             levelspeed += 0.2;
             NextLevelthreshold = 0;
         }
@@ -261,6 +324,10 @@ class GameWorld
         GenerateRandomBlock();
         score = 0;
         levelspeed = 1;
+    }
+    public void Explode()
+    {
+        grid.grid[tetrisblock.blockposition.X, tetrisblock.blockposition.Y] = 0;
     }
 }
 

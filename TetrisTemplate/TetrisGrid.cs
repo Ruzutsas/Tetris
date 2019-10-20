@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Tetris;
 /// <summary>
 /// A class for representing the Tetris playing grid.
 /// </summary>
@@ -69,6 +69,9 @@ class TetrisGrid
                     case 7:
                         spriteBatch.Draw(emptyCell, position, Color.Red);
                         break;
+                    case 8:
+                        spriteBatch.Draw(emptyCell, position, Color.Black);
+                        break;
                 }
             }
         }
@@ -131,7 +134,7 @@ class TetrisGrid
             }               
         }
     } 
-      
+
     /// <summary>
     /// Clears the grid.
     /// </summary>
