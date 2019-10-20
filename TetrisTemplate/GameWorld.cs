@@ -50,9 +50,11 @@ class GameWorld
     public static SoundEffect clearrow;
     protected static SoundEffect fall;
     protected SoundEffect explosion;
-    double levelspeed = 1;
+    double levelspeed = 0.5;
     public int score = 0;
     private int leveltimer;
+    private int level;
+    public int NextLevelthreshold = 0;
     Texture2D logo;
     public int Score
     {
@@ -170,8 +172,6 @@ class GameWorld
         }
         else if (gameState == GameState.Playing)
         {
-            
-            int level = Score / 100 + 1;
             grid.Draw(gameTime, spriteBatch);
             tetrisblock.Draw(gameTime, spriteBatch);
             nextTetrisBlock.Draw(gameTime, spriteBatch);
@@ -291,12 +291,11 @@ class GameWorld
 
     public void NextLevel(GameTime gameTime) //Verhoogt de valsnelheid van de blokken als er een bepaald aantal punten is behaald.
     {
-        int NextLevelthreshold = 0;
-        NextLevelthreshold += Score;
         if (NextLevelthreshold >= 200)
         {
             levelspeed += 0.2;
             NextLevelthreshold = 0;
+            level++;
             leveltimer = gameTime.TotalGameTime.Seconds;
         }
     }
@@ -308,6 +307,7 @@ class GameWorld
         grid = new TetrisGrid();
         GenerateRandomBlock();
         score = 0;
+        leveltimer = 0;
         levelspeed = 1;
     }
     public void Explode(int gridX, int gridY)
