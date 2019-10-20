@@ -164,7 +164,7 @@ class GameWorld
                 return new BlockT();
             default:
                 return new BlockZ();
-        }       
+        }         
     }
 
     public bool Collision()
@@ -213,9 +213,8 @@ class GameWorld
             }
         }
         if (GameOver())
-            gameState = GameState.GameOver;
-        tetrisblock = GetRandomBlock();
-        TetrisGrid.previoustetris = false;
+            gameState = GameState.GameOver;               
+        tetrisblock = GetRandomBlock();            
         grid.DetectFullLine();
         NextLevel();
     }
@@ -226,7 +225,7 @@ class GameWorld
         NextLevelthreshold += Score;
         if (NextLevelthreshold >= 200)
         {            
-            levelspeed += 0.3;
+            levelspeed += 0.0;
             NextLevelthreshold = 0;
         }
     }
@@ -239,6 +238,8 @@ class GameWorld
                 grid.grid[i, u] = 0;
             }
         }
+        score = 0;
+        levelspeed = 1;
     }
 }
 
