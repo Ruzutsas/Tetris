@@ -49,9 +49,11 @@ class GameWorld
     readonly Random randomblocks = new Random();
     public static SoundEffect clearrow;
     protected static SoundEffect fall;
+    protected SoundEffect explosion;
     double levelspeed = 1;
     public int score = 0;
-
+    private int leveltimer;
+    Texture2D logo;
     public int Score
     {
         get { return score; }
@@ -62,9 +64,11 @@ class GameWorld
     {
         random = new Random();
         gameState = GameState.Menu;
-        clearrow = Content.Load<SoundEffect>("clear");       
+        clearrow = Content.Load<SoundEffect>("clear");
         fall = Content.Load<SoundEffect>("fall");
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
+        explosion = Content.Load<SoundEffect>("Explosion");
+        logo = Content.Load<Texture2D>("tetrislogo");
     }
 
 
@@ -127,12 +131,6 @@ class GameWorld
                 {
                     if (inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.Enter))
                         gameState = GameState.Playing;
-
-                    else if (inputHelper.KeyPressed(Keys.Escape))
-                    {
-                        gameState = GameState.Menu;
-                    }
-
                 }
                 break;
         }
@@ -147,7 +145,7 @@ class GameWorld
             if (Collision())
             {
                 counter = 0;
-                Merge();
+                Merge(gameTime);
             }
 
             else
@@ -165,18 +163,28 @@ class GameWorld
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         spriteBatch.Begin();
-        if (gameState == GameState.Playing)
+        if (gameState == GameState.Menu)
         {
+            spriteBatch.Draw(logo, new Vector2(TetrisGame.ScreenSize.X / 3 - 10, 30),Color.White);
+            spriteBatch.DrawString(font, "Press SPACE To Start Game", new Vector2(TetrisGame.ScreenSize.X / 3, TetrisGame.ScreenSize.Y / 2), Color.Black);
+        }
+        else if (gameState == GameState.Playing)
+        {
+            
             int level = Score / 100 + 1;
             grid.Draw(gameTime, spriteBatch);
             tetrisblock.Draw(gameTime, spriteBatch);
             nextTetrisBlock.Draw(gameTime, spriteBatch);
             spriteBatch.DrawString(font, "Score: " + Score, new Vector2(TetrisGame.ScreenSize.X / 2, 0), Color.Black);
             spriteBatch.DrawString(font, "Level: " + level, new Vector2(TetrisGame.ScreenSize.X - (TetrisGame.ScreenSize.X / 3), 0), Color.Black);
+            if (leveltimer + 1 > gameTime.TotalGameTime.Seconds && leveltimer != 0)
+                spriteBatch.DrawString(font, "LEVEL UP!", new Vector2(TetrisGame.ScreenSize.X / 2, 320), Color.Black);
         }
+
         else if (gameState == GameState.GameOver)
         {
-            spriteBatch.DrawString(font, "GAME OVER", new Vector2(300, 500), Color.Blue);
+            spriteBatch.DrawString(font, "GAME OVER", new Vector2(TetrisGame.ScreenSize.X / 3 + 75, TetrisGame.ScreenSize.Y / 2), Color.Blue);
+            spriteBatch.DrawString(font, "Press SPACE To Try Again", new Vector2(TetrisGame.ScreenSize.X / 4 + 75, TetrisGame.ScreenSize.Y / 2 + 50), Color.Blue);
             Reset();
         }
         spriteBatch.End();
@@ -252,65 +260,36 @@ class GameWorld
         return gameover;
     }
 
-    public void Merge()
+    public void Merge(GameTime gameTime)
     {
         int x = tetrisblock.tetrisblock.GetLength(0);
         for (int a = 0; a < x; a++)
         {
             for (int k = 0; k < x; k++)
             {
-                int gridX = tetrisblock.blockposition.X / tetrisblock.emptyCell.Width + a;
-                int gridY = tetrisblock.blockposition.Y / tetrisblock.emptyCell.Height + k;
-                if (tetrisblock.tetrisblock[a, k] != 0 && tetrisblock.tetrisblock[a, k]!=8)
+                int gridX = tetrisblock.blockposition.X / blocksize + a;
+                int gridY = tetrisblock.blockposition.Y / blocksize + k;
+                if (tetrisblock.tetrisblock[a, k] != 0 && tetrisblock.tetrisblock[a, k] != 8)
                 {
                     grid.grid[gridX, gridY] = tetrisblock.tetrisblock[a, k];
                 }
                 if (tetrisblock.tetrisblock[a, k] == 8)
                 {
-                    grid.grid[gridX + 1, gridY + 1] = 0;
-                    grid.grid[gridX + 2, gridY + 2] = 0;
-                    grid.grid[gridX + 2, gridY + 1] = 0;
-                    grid.grid[gridX + 1, gridY + 2] = 0;
-
-                    grid.grid[gridX - 1, gridY - 1] = 0;
-                    grid.grid[gridX - 2, gridY - 2] = 0;
-                    grid.grid[gridX - 2, gridY - 1] = 0;
-                    grid.grid[gridX - 1, gridY - 2] = 0;
-
-                    grid.grid[gridX - 1, gridY + 1] = 0;
-                    grid.grid[gridX - 2, gridY + 2] = 0;
-                    grid.grid[gridX - 2, gridY + 1] = 0;
-                    grid.grid[gridX - 1, gridY + 2] = 0;
-
-                    grid.grid[gridX + 1, gridY - 1] = 0;
-                    grid.grid[gridX + 2, gridY - 2] = 0;
-                    grid.grid[gridX + 2, gridY - 1] = 0;
-                    grid.grid[gridX + 1, gridY - 2] = 0;
-
-                    grid.grid[gridX, gridY - 1] = 0;
-                    grid.grid[gridX, gridY - 2] = 0;
-                    grid.grid[gridX, gridY + 1] = 0;
-                    grid.grid[gridX, gridY + 2] = 0;
-
-                    grid.grid[gridX + 2, gridY] = 0;
-                    grid.grid[gridX + 1, gridY] = 0;
-                    grid.grid[gridX - 2, gridY] = 0;
-                    grid.grid[gridX - 1, gridY] = 0;
-
+                    Explode(gridX, gridY);
                 }
             }
         }
         if (GameOver())
             gameState = GameState.GameOver;
         tetrisblock = nextTetrisBlock;
-        tetrisblock.blockposition = new Point(4 * blocksize, 0);      
+        tetrisblock.blockposition = new Point(4 * blocksize, 0);
         fall.Play(0.2f, 0, 0);
         grid.DetectFullLine();
-        NextLevel();
+        NextLevel(gameTime);
         GenerateRandomBlock();
     }
 
-    public void NextLevel() //Verhoogt de valsnelheid van de blokken als er een bepaald aantal punten is behaald.
+    public void NextLevel(GameTime gameTime) //Verhoogt de valsnelheid van de blokken als er een bepaald aantal punten is behaald.
     {
         int NextLevelthreshold = 0;
         NextLevelthreshold += Score;
@@ -318,6 +297,7 @@ class GameWorld
         {
             levelspeed += 0.2;
             NextLevelthreshold = 0;
+            leveltimer = gameTime.TotalGameTime.Seconds;
         }
     }
     public void Reset()
@@ -330,9 +310,71 @@ class GameWorld
         score = 0;
         levelspeed = 1;
     }
-    public void Explode()
+    public void Explode(int gridX, int gridY)
     {
-        grid.grid[tetrisblock.blockposition.X, tetrisblock.blockposition.Y] = 0;
+        try
+        {
+            if (gridX > 2)
+                grid.grid[gridX - 2, gridY] = 0;
+            if (gridX < 10)
+                grid.grid[gridX + 2, gridY] = 0;
+            if (gridY < 18)
+                grid.grid[gridX, gridY + 2] = 0;
+            if (gridY > 2)
+                grid.grid[gridX, gridY - 2] = 0;
+
+            if (gridX > 1)
+                grid.grid[gridX - 1, gridY] = 0;
+            if (gridX < 11)
+                grid.grid[gridX + 1, gridY] = 0;
+            if (gridY < 19)
+                grid.grid[gridX, gridY + 1] = 0;
+            if (gridY > 1)
+                grid.grid[gridX, gridY - 1] = 0;
+
+            if (gridX < 11 && gridY < 19)
+                grid.grid[gridX + 1, gridY + 1] = 0;
+            if (gridX < 10 && gridY < 18)
+                grid.grid[gridX + 2, gridY + 2] = 0;
+            if (gridX < 10 && gridY < 19)
+                grid.grid[gridX + 2, gridY + 1] = 0;
+            if (gridX < 11 && gridY < 18)
+                grid.grid[gridX + 1, gridY + 2] = 0;
+
+            if (gridX > 1 && gridY > 1)
+                grid.grid[gridX - 1, gridY - 1] = 0;
+            if (gridX > 2 && gridY > 2)
+                grid.grid[gridX - 2, gridY - 2] = 0;
+            if (gridX > 2 && gridY > 1)
+                grid.grid[gridX - 2, gridY - 1] = 0;
+            if (gridX > 1 && gridY > 2)
+                grid.grid[gridX - 1, gridY - 2] = 0;
+
+            if (gridX > 1 && gridY < 19)
+                grid.grid[gridX - 1, gridY + 1] = 0;
+            if (gridX > 2 && gridY < 18)
+                grid.grid[gridX - 2, gridY + 2] = 0;
+            if (gridX > 2 && gridY < 19)
+                grid.grid[gridX - 2, gridY + 1] = 0;
+            if (gridX > 1 && gridY < 18)
+                grid.grid[gridX - 1, gridY + 2] = 0;
+
+            if (gridX < 11 && gridY > 1)
+                grid.grid[gridX + 1, gridY - 1] = 0;
+            if (gridX < 10 && gridY > 2)
+                grid.grid[gridX + 2, gridY - 2] = 0;
+            if (gridX < 10 && gridY > 1)
+                grid.grid[gridX + 2, gridY - 1] = 0;
+            if (gridX < 11 && gridY > 2)
+                grid.grid[gridX + 1, gridY - 2] = 0;
+        }
+
+        catch (System.IndexOutOfRangeException e)
+        {
+
+        }
+
+        explosion.Play(0.6f, 0, 0);
     }
 }
 
