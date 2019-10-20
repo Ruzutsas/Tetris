@@ -112,22 +112,27 @@ class TetrisGrid
             switch (amountfullrows)
             {                      
                 case 1:
-                    TetrisGame.gameWorld.Score += 100;            //Verhoogt de score met 100 punten.                                                                             
+                    TetrisGame.gameWorld.Score += 100; //Verhoogt de score met 100 punten. 
+                    TetrisGame.gameWorld.NextLevelthreshold += 100;                                                                             
                     previoustetris = false;
                     break;                
                 case 2:
                     TetrisGame.gameWorld.Score += 200;
+                    TetrisGame.gameWorld.NextLevelthreshold += 200;
                     previoustetris = false;
                     break;
                 case 3:
                     TetrisGame.gameWorld.Score += 300;
+                    TetrisGame.gameWorld.NextLevelthreshold += 300;
                     previoustetris = false;
                     break;
                 case 4:
                     TetrisGame.gameWorld.Score += 800;
+                    TetrisGame.gameWorld.NextLevelthreshold += 800;
                     if (previoustetris)
                     {
                         TetrisGame.gameWorld.Score += 400;      //Back-to-Back Tetris is 1200 points waard.
+                        TetrisGame.gameWorld.NextLevelthreshold += 400;
                     }  
                     previoustetris = true;                      //Als er deze beurt een Tetris gemaakt wordt kan er in de volgende beurten een Back-to-Back Tetris gemaakt worden.
                     break;
