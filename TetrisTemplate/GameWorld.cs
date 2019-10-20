@@ -80,13 +80,15 @@ class GameWorld
         }
         else if (inputHelper.KeyPressed(Keys.Right)) //Beweegt de tetromino naar rechts
         {
-            if (!Collision())
-                tetrisblock.blockposition.X += blocksize;
+            tetrisblock.blockposition.X += blocksize;
+            if (Collision())
+                tetrisblock.blockposition.X -= blocksize;
         }
         else if (inputHelper.KeyPressed(Keys.Left))
         {
-            if (!Collision())
-                tetrisblock.blockposition.X -= blocksize;
+            tetrisblock.blockposition.X -= blocksize;
+            if (Collision())
+                tetrisblock.blockposition.X += blocksize;
         }
         else if (inputHelper.KeyPressed(Keys.A))
         {
@@ -194,11 +196,8 @@ class GameWorld
                 int blockY = tetrisblock.blockposition.Y + y * blocksize;
                 if (tetrisblock.tetrisblock[x, y] != 0)
                 {
-                    if (blockX < 0 || blockX > blocksize * 11 || blockY < 0 || blockY >= blocksize * 19)
+                    if (blockX < 0 || blockX > blocksize * 11 || blockY < 0 || blockY >= blocksize * 19 || grid.grid[gridX, gridY + 1] != 0)
                         collision = true;
-                    if (grid.grid[gridX, gridY + 1] != 0 || grid.grid[gridX + 1, gridY] != 0 || grid.grid[gridX - 1, gridY] != 0)
-                        collision = true;
-
                 }
             }
         }
