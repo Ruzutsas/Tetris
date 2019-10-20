@@ -39,11 +39,20 @@ class GameWorld
     /// <summary>
     /// The main grid of the game.
     /// </summary>
+   
     int blocksize = 30;
     TetrisGrid grid;
-    public double counter = 0;
+    public double counter = 0;    
     public TetrisBlock tetrisblock;
     readonly Random randomblocks = new Random();
+    double levelspeed = 1;
+    public int score = 0;   
+
+    public int Score
+    {
+        get { return score; }
+        set { score = value; }
+    }
 
     public GameWorld()
     {
@@ -51,7 +60,7 @@ class GameWorld
         gameState = GameState.Playing;
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
         tetrisblock = GetRandomBlock();
-        grid = new TetrisGrid();       
+        grid = new TetrisGrid();           
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
@@ -114,10 +123,9 @@ class GameWorld
         }
         else
         {
-            counter += gameTime.ElapsedGameTime.TotalSeconds;
+            counter += gameTime.ElapsedGameTime.TotalSeconds * levelspeed;         
             tetrisblock.blockposition.Y = ((int)counter * blocksize);
         }
-
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -127,7 +135,7 @@ class GameWorld
         {
             grid.Draw(gameTime, spriteBatch);
             tetrisblock.Draw(gameTime, spriteBatch);
-            spriteBatch.DrawString(font, "", Vector2.Zero, Color.Blue);
+            spriteBatch.DrawString(font, "Score: " + Score , new Vector2(TetrisGame.ScreenSize.X / 2, 0), Color.Black);
         }
         else if (gameState == GameState.GameOver)
         {
@@ -158,6 +166,7 @@ class GameWorld
                 return new BlockZ();
         }       
     }
+
     public bool Collision()
     {
         bool collision = false;
@@ -187,6 +196,7 @@ class GameWorld
             gameover = true;
         return gameover;
     }
+
     public void Merge()
     {
         int x = tetrisblock.tetrisblock.GetLength(0);
@@ -205,13 +215,24 @@ class GameWorld
         if (GameOver())
             gameState = GameState.GameOver;
         tetrisblock = GetRandomBlock();
+        TetrisGrid.previoustetris = false;
         grid.DetectFullLine();
+        NextLevel();
     }
 
-
+    public void NextLevel() //Verhoogt de valsnelheid van de blokken als er een bepaald aantal punten is behaald.
+    {
+        int NextLevelthreshold = 0;
+        NextLevelthreshold += Score;
+        if (NextLevelthreshold >= 200)
+        {            
+            levelspeed += 0.3;
+            NextLevelthreshold = 0;
+        }
+    }
     public void Reset()
     {
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 12; i++)        //Clear Grid
         {
             for (int u = 0; u < 20; u++)
             {

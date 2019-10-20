@@ -26,7 +26,7 @@ namespace Tetris
         public TetrisBlock()
         {
             emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
-            blockposition = new Point(4 *blocksize, 0);
+            blockposition = new Point(4 * blocksize, 0);
             Clear();
         }
 

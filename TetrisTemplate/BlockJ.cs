@@ -13,10 +13,11 @@ namespace Tetris
         public BlockJ()
         {
             tetrisblock = new int[3, 3]
-          { {0,2,0},
-            {0,2,0},
-            {2,2,0}};
-            color = Color.Orange;               //Kleur van BlockJ
+          { {3,3,0},
+            {0,3,0},
+            {0,3,0}};
+            color = Color.Blue;         //Kleur van BlockL
         }
+
     }
 }
