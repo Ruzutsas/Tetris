@@ -150,10 +150,9 @@ class GameWorld
                 counter = 0;
                 Merge(gameTime);
             }
-
             else
             {
-                counter = counter * levelspeed + gameTime.ElapsedGameTime.TotalSeconds;
+                counter += gameTime.ElapsedGameTime.TotalSeconds * levelspeed;
                 tetrisblock.blockposition.Y = ((int)counter * blocksize);
             }
         }
@@ -374,7 +373,6 @@ class GameWorld
         {
 
         }
-
         explosion.Play(0.6f, 0, 0);
     }
 }

@@ -1,9 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\TetrisTemplate",
-    "\\TetrisTemplate\\Content"
+    "\\TetrisTemplate"
   ],
-  "SelectedNode": "\\TetrisTemplate\\TetrisGrid.cs",
+  "SelectedNode": "\\TetrisTemplate\\TetrisGame.cs",
   "PreviewInSolutionExplorer": false
 }
