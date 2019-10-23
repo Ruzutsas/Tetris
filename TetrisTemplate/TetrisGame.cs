@@ -2,12 +2,12 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using Tetris;
+using Microsoft.Xna.Framework.Media;
 class TetrisGame : Game
 {
     SpriteBatch spriteBatch;
     InputHelper inputHelper;
-    GameWorld gameWorld;
+    public static GameWorld gameWorld;
     /// <summary>
     /// A static reference to the ContentManager object, used for loading assets.
     /// </summary>
@@ -42,6 +42,7 @@ class TetrisGame : Game
         graphics.PreferredBackBufferWidth = ScreenSize.X;
         graphics.PreferredBackBufferHeight = ScreenSize.Y;
 
+        
         // create the input helper object
         inputHelper = new InputHelper();
     }
@@ -50,7 +51,10 @@ class TetrisGame : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
         // create and reset the game world
-        gameWorld = new GameWorld();
+        gameWorld = new GameWorld(ContentManager);
+        MediaPlayer.IsRepeating = true;
+        MediaPlayer.Play(Content.Load<Song>("TetrisMusic"));
+        MediaPlayer.Volume -= 0.90f;
         gameWorld.Reset();
     }
 
@@ -63,7 +67,7 @@ class TetrisGame : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.White);
+        GraphicsDevice.Clear(Color.Cyan);
         gameWorld.Draw(gameTime, spriteBatch);
     }
 }

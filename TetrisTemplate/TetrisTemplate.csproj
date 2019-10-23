@@ -39,6 +39,7 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BlockB.cs" />
     <Compile Include="BlockJ.cs" />
     <Compile Include="BlockL.cs" />
     <Compile Include="BlockS.cs" />

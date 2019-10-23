@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 
 namespace Tetris
 {
@@ -12,11 +6,11 @@ namespace Tetris
     {
         public BlockI()
         {
-            tetrisblock = new bool[4, 4]
-              {{false,false,false,false},
-            {false,false,false,false},
-            {true,true,true,true},
-            {false,false,false,false}};
+            tetrisblock = new int[4, 4]
+           {{0,0,0,0},
+            {0,0,0,0},
+            {1,1,1,1},
+            {0,0,0,0}};            
             color = Color.LightSkyBlue;             //Kleur van BlockI
         }
     }

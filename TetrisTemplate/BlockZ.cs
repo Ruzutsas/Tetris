@@ -12,11 +12,11 @@ namespace Tetris
     {
         public BlockZ()
         {
-            tetrisblock = new bool[3, 3]
-          { {false,true,false},
-            {true,true,false},
-            {true,false,false}};
-            color = Color.Red;              //Kleur van BlockZ
+            tetrisblock = new int[3, 3] 
+          { {7,0,0},
+            {7,7,0},
+            {0,7,0}};
+            color = Color.Red;               //Kleur van BlockS
         }
     }
 }

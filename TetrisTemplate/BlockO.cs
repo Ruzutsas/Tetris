@@ -12,9 +12,9 @@ namespace Tetris
     {
         public BlockO()
         {
-            tetrisblock = new bool[2, 2] 
-          { {true,true},
-            {true,true}};
+            tetrisblock = new int[2, 2] 
+          { {4,4},
+            {4,4}};
             color = Color.Yellow;               //Kleur van BlockO
         }
     }
