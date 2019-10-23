@@ -58,11 +58,11 @@ class GameWorld
     {
         tetrisblock.HandleInput(gameTime, inputHelper);
         if (inputHelper.KeyPressed(Keys.Down))
-            {
-                counter++;
-                if (tetrisblock.Collision())
-                    counter--;
-            }
+        {
+            counter++;
+            if (tetrisblock.Collision())
+                counter--;
+        }
     }
 
     public void Update(GameTime gameTime)
