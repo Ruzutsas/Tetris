@@ -307,6 +307,7 @@ class GameWorld
         grid = new TetrisGrid();
         GenerateRandomBlock();
         score = 0;
+        level = 0;
         leveltimer = 0;
         levelspeed = 1;
     }
