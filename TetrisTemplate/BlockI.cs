@@ -12,7 +12,7 @@ namespace Tetris
             {1,1,1,1},
             {0,0,0,0}};            
             color = Color.LightSkyBlue;             //Kleur van BlockI
-            //su;erleuk
+            //niet leuk
         }
     }
 }
